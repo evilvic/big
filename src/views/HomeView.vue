@@ -1,26 +1,39 @@
 <script setup>
-import Card from '@/components/Card.vue'
-// const phrase = "Did you get older doing nothing today?"
-// const phrase = "Don't you wanna stop complaining?"
-// const phrase = "I'm not a bad person, I'm a good person"
-// const phrase = "little? little? little? little? little? little? little?"
+import Carousel from '@/components/Slider.vue'
 
+const cards = [
+  {
+    text: "Did you get older doing nothing today?",
+    fontColor: "#FFF2D7",
+    backgroundColor: "#F98866"
+  },
+  {
+    text: "Don't you wanna stop complaining?",
+    fontColor: "#FFFFFF",
+    backgroundColor: "#4A4E4D"
+  },
+  {
+    text: "I'm not a bad person, I'm a good person",
+    fontColor: "#2A363B",
+    backgroundColor: "#99B898"
+  },
+  {
+    text: "Water your plants",
+    fontColor: "#FF847C",
+    backgroundColor: "#2A363B"
+  }
+]
 </script>
 
 <template>
   <div class="container">
-    <Card
-      text="Did you get older doing nothing today?"
-      fontColor="#FFF2D7"
-      backgroundColor="#F98866"
-    />
+    <Carousel :cards="cards" />
   </div>
 </template>
 
 <style scoped>
 .container {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
-
 </style>
