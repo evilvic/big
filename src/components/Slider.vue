@@ -57,6 +57,7 @@ const handleTouchEnd = () => {
   }, 2000)
 }
 
+// TODO: Fix, timer reset on every change
 const showIndicatorsTemporarily = () => {
   showIndicators.value = true
   setTimeout(() => {
@@ -65,15 +66,19 @@ const showIndicatorsTemporarily = () => {
 }
 
 onMounted(() => {
-  containerRef.value.addEventListener('touchstart', handleTouchStart)
-  containerRef.value.addEventListener('touchmove', handleTouchMove)
-  containerRef.value.addEventListener('touchend', handleTouchEnd)
+  if (containerRef.value) {
+    containerRef.value.addEventListener('touchstart', handleTouchStart)
+    containerRef.value.addEventListener('touchmove', handleTouchMove)
+    containerRef.value.addEventListener('touchend', handleTouchEnd)
+  }
 })
 
 onUnmounted(() => {
-  containerRef.value.removeEventListener('touchstart', handleTouchStart)
-  containerRef.value.removeEventListener('touchmove', handleTouchMove)
-  containerRef.value.removeEventListener('touchend', handleTouchEnd)
+  if (containerRef.value) {
+    containerRef.value.removeEventListener('touchstart', handleTouchStart)
+    containerRef.value.removeEventListener('touchmove', handleTouchMove)
+    containerRef.value.removeEventListener('touchend', handleTouchEnd)
+  }
 })
 
 watch(currentIndex, (newIndex, oldIndex) => {
