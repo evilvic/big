@@ -45,8 +45,12 @@ const handleTouchEnd = () => {
         @touchstart="handleTouchStart(collection.id)"
         @touchend="handleTouchEnd"
         @touchcancel="handleTouchEnd"
+        :style="{
+          backgroundColor: collection.backgroundColor,
+          color: collection.fontColor
+        }"
       >
-        <h2>
+        <h2 :style="{ color: collection.darkFontColor }">
           {{ collection.title }}
         </h2>
         <p>
@@ -71,7 +75,6 @@ const handleTouchEnd = () => {
   cursor: pointer;
   padding: 20px;
   margin: 10px 0;
-  background-color: #F98866;
   border-radius: 5px;
 }
 </style>

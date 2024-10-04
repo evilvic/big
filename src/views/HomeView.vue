@@ -7,6 +7,7 @@ import Carousel from '@/components/Slider.vue'
 const route = useRoute()
 const store = useCollectionsStore()
 
+const currentCollection = computed(() => store.currentCollection)
 const cards = computed(() => store.currentCollection?.cards || [])
 
 onMounted(() => {
@@ -18,7 +19,12 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <Carousel :cards="cards" />
+    <Carousel 
+      :cards="cards"
+      :collectionFontColor="currentCollection.fontColor"
+      :collectionBackgroundColor="currentCollection.backgroundColor"
+      :collectionDarkFontColor="currentCollection.darkFontColor"
+    />
   </div>
 </template>
 

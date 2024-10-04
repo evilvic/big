@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 const props = defineProps({
   text: {
@@ -8,13 +8,33 @@ const props = defineProps({
   },
   fontColor: {
     type: String,
-    default: '#FFF2D7',
+    // default: '#FFF2D7',
   },
   backgroundColor: {
     type: String,
-    default: '#F98866',
+    // default: '#F98866',
   },
+  darkFontColor: {
+    type: String,
+    default: '',
+  },
+  collectionFontColor: {
+    type: String,
+    required: true,
+  },
+  collectionBackgroundColor: {
+    type: String,
+    required: true,
+  },
+  collectionDarkFontColor: {
+    type: String,
+    required: true,
+  }
 })
+
+const effectiveFontColor = computed(() => props.fontColor || props.collectionFontColor)
+const effectiveBackgroundColor = computed(() => props.backgroundColor || props.collectionBackgroundColor)
+const effectiveDarkFontColor = computed(() => props.darkFontColor || props.collectionDarkFontColor)
 
 const words = ref(props.text.split(' '))
 const containerRef = ref(null)
@@ -68,7 +88,7 @@ const adjustLayout = () => {
     div.style.lineHeight = '0.9'
     div.style.whiteSpace = 'nowrap'
     div.style.fontFamily = 'Barrio, sans-serif'
-    div.style.color = props.fontColor
+    div.style.color = props.effectiveFontColor
     div.textContent = row.join(' ')
     container.appendChild(div)
     return div
@@ -123,7 +143,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <article ref="containerRef" :style="{ backgroundColor: backgroundColor }"></article>
+  <article 
+    ref="containerRef" 
+    :style="{ 
+      backgroundColor: effectiveBackgroundColor,
+      color: effectiveFontColor
+    }"
+  ></article>
 </template>
 
 <style scoped>

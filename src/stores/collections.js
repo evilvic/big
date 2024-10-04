@@ -8,20 +8,36 @@ export const useCollectionsStore = defineStore('collections', () => {
       id: 1,
       title: "Motivational Quotes",
       description: "A collection of motivational quotes to stay motivated and focused.",
+      fontColor: "#EDCBD2",
+      backgroundColor: "#80C4B7",
+      darkFontColor: "#E3856B",
       cards: [
-        { text: "Did you get older doing nothing today?", fontColor: "#FFF2D7", backgroundColor: "#F98866" },
-        { text: "Don't you wanna stop complaining?", fontColor: "#FFFFFF", backgroundColor: "#4A4E4D" },
+        { 
+          text: "Did you get older doing nothing today?",
+          fontColor: "#FFE4B5",
+          backgroundColor: "#4682B4",
+          darkFontColor: "#CD853F"
+        },
+        { text: "Don't you wanna stop complaining?" },
       ]
     },
     {
       id: 2,
-      title: "Positive Affirmations",
-      description: "A collection of positive affirmations to help you stay positive and motivated.",
+      title: "Quotes",
+      description: "A collection of inspiring quotes to keep you motivated and focused.",
+      fontColor: "#FFE4B5",
+      backgroundColor: "#4682B4",
+      darkFontColor: "#CD853F",
       cards: [
-        { text: "I'm not a bad person, I'm a good person", fontColor: "#2A363B", backgroundColor: "#99B898" },
-        { text: "Water your plants", fontColor: "#FF847C", backgroundColor: "#2A363B" },
+        { 
+          text: "Did you get older doing nothing today?",
+          fontColor: "#EDCBD2",
+          backgroundColor: "#80C4B7",
+          darkFontColor: "#E3856B",
+        },
+        { text: "Don't you wanna stop complaining?" },
       ]
-    }
+    },
   ])
 
   const currentCollectionId = ref(null)

@@ -1,11 +1,26 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import Card from '@/components/Card.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
   cards: {
     type: Array,
     required: true
+  },
+  collectionFontColor: {
+    type: String,
+    required: true,
+  },
+  collectionBackgroundColor: {
+    type: String,
+    required: true,
+  },
+  collectionDarkFontColor: {
+    type: String,
+    required: true,
   }
 })
 
@@ -28,6 +43,8 @@ const goToPrev = () => {
   if (currentIndex.value > 0) {
     direction.value = 'prev'
     currentIndex.value -= 1
+  } else {
+    router.push({ name: 'collections' })
   }
 }
 
@@ -108,6 +125,10 @@ watch(currentIndex, (newIndex, oldIndex) => {
         :text="card.text"
         :fontColor="card.fontColor"
         :backgroundColor="card.backgroundColor"
+        :darkFontColor="card.darkFontColor"
+        :collectionFontColor="collectionFontColor"
+        :collectionBackgroundColor="collectionBackgroundColor"
+        :collectionDarkFontColor="collectionDarkFontColor"
         class="slider-item"
         :class="{ 'current': index === currentIndex }"
       />
