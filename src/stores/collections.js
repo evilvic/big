@@ -47,7 +47,6 @@ export const useCollectionsStore = defineStore('collections', () => {
   )
 
   function setCurrentCollection(id) {
-    console.log("triggered")
     currentCollectionId.value = parseInt(id)
   }
 
