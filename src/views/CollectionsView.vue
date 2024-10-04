@@ -1,34 +1,35 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCollectionsStore } from '@/stores/collections'
+import { storeToRefs } from 'pinia'
+import('@/views/HomeView.vue')
 
+const store = useCollectionsStore()
 const router = useRouter()
 
-const collections = ref([
-  {
-    id: 1,
-    title: "Motivational Quotes",
-    cards: [
-      { text: "Did you get older doing nothing today?", fontColor: "#FFF2D7", backgroundColor: "#F98866" },
-      { text: "Don't you wanna stop complaining?", fontColor: "#FFFFFF", backgroundColor: "#4A4E4D" },
-    ]
-  },
-  {
-    id: 2,
-    title: "Positive Affirmations",
-    cards: [
-      { text: "I'm not a bad person, I'm a good person", fontColor: "#2A363B", backgroundColor: "#99B898" },
-      { text: "Water your plants", fontColor: "#FF847C", backgroundColor: "#2A363B" },
-    ]
-  }
-])
+const { collections } = storeToRefs(store)
+
+const touchTimeout = ref(null)
 
 const navigateToCollection = (collectionId) => {
   router.push({ name: 'collection', params: { id: collectionId } })
 }
 
-const preloadHomeView = () => {
-  import('@/views/HomeView.vue')
+const prefetchCollection = (collectionId) => {
+  store.setCurrentCollection(collectionId)
+}
+
+const handleTouchStart = (collectionId) => {
+  touchTimeout.value = setTimeout(() => {
+    prefetchCollection(collectionId)
+  }, 100)
+}
+
+const handleTouchEnd = () => {
+  if (touchTimeout.value) {
+    clearTimeout(touchTimeout.value)
+  }
 }
 </script>
 
@@ -40,7 +41,10 @@ const preloadHomeView = () => {
         v-for="collection in collections" 
         :key="collection.id" 
         @click="navigateToCollection(collection.id)"
-        @mouseover="preloadHomeView"
+        @mouseover="prefetchCollection(collection.id)"
+        @touchstart="handleTouchStart(collection.id)"
+        @touchend="handleTouchEnd"
+        @touchcancel="handleTouchEnd"
       >
         {{ collection.title }}
       </li>

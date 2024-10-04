@@ -1,37 +1,17 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useCollectionsStore } from '@/stores/collections'
 import Carousel from '@/components/Slider.vue'
 
-const props = defineProps({
-  id: {
-    type: [Number, String],
-    required: true
-  }
-})
+const route = useRoute()
+const store = useCollectionsStore()
 
-const cards = ref([])
+const cards = computed(() => store.currentCollection?.cards || [])
 
 onMounted(() => {
-  const allCollections = [
-    {
-      id: 1,
-      cards: [
-        { text: "Did you get older doing nothing today?", fontColor: "#FFF2D7", backgroundColor: "#F98866" },
-        { text: "Don't you wanna stop complaining?", fontColor: "#FFFFFF", backgroundColor: "#4A4E4D" },
-      ]
-    },
-    {
-      id: 2,
-      cards: [
-        { text: "I'm not a bad person, I'm a good person", fontColor: "#2A363B", backgroundColor: "#99B898" },
-        { text: "Water your plants", fontColor: "#FF847C", backgroundColor: "#2A363B" },
-      ]
-    }
-  ]
-
-  const collection = allCollections.find(c => c.id === Number(props.id))
-  if (collection) {
-    cards.value = collection.cards
+  if (!store.currentCollection) {
+    store.setCurrentCollection(parseInt(route.params.id))
   }
 })
 </script>

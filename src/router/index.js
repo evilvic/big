@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useCollectionsStore } from '@/stores/collections'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,16 +13,8 @@ const router = createRouter({
       path: '/collection/:id',
       name: 'collection',
       component: () => import('@/views/HomeView.vue'),
-      props: true
     }
   ]
-})
-
-router.beforeEach((to, from, next) => {
-  if (to.name === 'collection') {
-    import('@/views/HomeView.vue')
-  }
-  next()
 })
 
 export default router
