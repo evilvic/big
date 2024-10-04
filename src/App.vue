@@ -1,7 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useThemeStore } from '@/stores/themeStore'
 
+const themeStore = useThemeStore()
 const route = useRoute()
 const transitionName = ref('slide-left')
 
@@ -9,6 +11,10 @@ watch(() => route.path, (newPath, oldPath) => {
   const newDepth = newPath.split('/').length
   const oldDepth = oldPath.split('/').length
   transitionName.value = newDepth < oldDepth ? 'slide-right' : 'slide-left'
+})
+
+onMounted(() => {
+  themeStore.initializeTheme()
 })
 </script>
 

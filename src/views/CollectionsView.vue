@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collectionStore'
 import { storeToRefs } from 'pinia'
 import('@/views/HomeView.vue')
 

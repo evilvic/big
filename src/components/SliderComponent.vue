@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import Card from '@/components/Card.vue'
+import Slide from '@/components/SlideComponent.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -119,7 +119,7 @@ watch(currentIndex, (newIndex, oldIndex) => {
 <template>
   <div class="carousel" ref="containerRef" @click="showIndicatorsTemporarily">
     <div class="slider-container">
-      <Card
+      <Slide
         v-for="(card, index) in cards"
         :key="index"
         :text="card.text"

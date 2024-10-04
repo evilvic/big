@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collections'
-import Carousel from '@/components/Slider.vue'
+import { useCollectionsStore } from '@/stores/collectionStore'
+import Slider from '@/components/SliderComponent.vue'
 
 const route = useRoute()
 const store = useCollectionsStore()
@@ -19,7 +19,7 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <Carousel 
+    <Slider 
       :cards="cards"
       :collectionFontColor="currentCollection.fontColor"
       :collectionBackgroundColor="currentCollection.backgroundColor"

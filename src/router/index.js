@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collectionStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
