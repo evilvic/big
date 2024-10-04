@@ -46,7 +46,12 @@ const handleTouchEnd = () => {
         @touchend="handleTouchEnd"
         @touchcancel="handleTouchEnd"
       >
-        {{ collection.title }}
+        <h2>
+          {{ collection.title }}
+        </h2>
+        <p>
+          {{ collection.description }}
+        </p>
       </li>
     </ul>
   </div>
@@ -64,9 +69,9 @@ const handleTouchEnd = () => {
 
 .collections-list li {
   cursor: pointer;
-  padding: 10px;
+  padding: 20px;
   margin: 10px 0;
-  background-color: #f0f0f0;
+  background-color: #F98866;
   border-radius: 5px;
 }
 </style>

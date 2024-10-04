@@ -67,6 +67,7 @@ const adjustLayout = () => {
     div.style.textAlign = 'center'
     div.style.lineHeight = '0.9'
     div.style.whiteSpace = 'nowrap'
+    div.style.fontFamily = 'Barrio, sans-serif'
     div.style.color = props.fontColor
     div.textContent = row.join(' ')
     container.appendChild(div)
@@ -136,6 +137,5 @@ article {
   padding: 0 20px;
   box-sizing: border-box;
   overflow: hidden;
-  font-family: 'Barrio', sans-serif;
 }
 </style>
