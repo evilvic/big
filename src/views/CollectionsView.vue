@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollectionsStore } from '@/stores/collections'
 import { storeToRefs } from 'pinia'
@@ -11,6 +11,7 @@ const router = useRouter()
 const { collections } = storeToRefs(store)
 
 const touchTimeout = ref(null)
+const isDarkMode = ref(false)
 
 const navigateToCollection = (collectionId) => {
   router.push({ name: 'collection', params: { id: collectionId } })
@@ -31,6 +32,28 @@ const handleTouchEnd = () => {
     clearTimeout(touchTimeout.value)
   }
 }
+
+const getCollectionStyle = (collection) => {
+  return {
+    backgroundColor: isDarkMode.value ? "#2B2B2B" : collection.lightColor,
+    color: isDarkMode.value ? collection.lightColor : collection.darkColor,
+  }
+}
+
+const updateColorScheme = (e) => {
+  isDarkMode.value = e.matches
+}
+
+onMounted(() => {
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  isDarkMode.value = mediaQuery.matches
+  mediaQuery.addEventListener('change', updateColorScheme)
+})
+
+onUnmounted(() => {
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  mediaQuery.removeEventListener('change', updateColorScheme)
+})
 </script>
 
 <template>
@@ -45,12 +68,9 @@ const handleTouchEnd = () => {
         @touchstart="handleTouchStart(collection.id)"
         @touchend="handleTouchEnd"
         @touchcancel="handleTouchEnd"
-        :style="{
-          backgroundColor: collection.backgroundColor,
-          color: collection.fontColor
-        }"
+        :style="getCollectionStyle(collection)"
       >
-        <h2 :style="{ color: collection.darkFontColor }">
+        <h2>
           {{ collection.title }}
         </h2>
         <p>
@@ -76,5 +96,9 @@ const handleTouchEnd = () => {
   padding: 20px;
   margin: 10px 0;
   border-radius: 5px;
+}
+
+h2 {
+  color: inherit;
 }
 </style>

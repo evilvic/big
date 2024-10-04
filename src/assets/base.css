@@ -3,19 +3,21 @@
 :root {
   --white: #FFFFFF;
   --light: #DEE4E7;
-  --dark: #37474F;
-  --black: #222222;
+  --dark: #222222;
+  --black: #121212;
 }
 
 :root {
   --bg-clr: var(--white);
-  --text-clr: var(--black);
+  --title-clr: var(--black);
+  --text-clr: var(--dark);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-clr: var(--black);
-    --text-clr: var(--white);
+    --title-clr: var(--white);
+    --text-clr: var(--light);
   }
 }
 
@@ -40,6 +42,7 @@ h1 {
   font-size: 3rem;
   line-height: 1.2;
   margin-bottom: 20px;
+  color: var(--title-clr);
 }
 
 h2 {

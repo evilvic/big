@@ -11,12 +11,16 @@ export const useCollectionsStore = defineStore('collections', () => {
       fontColor: "#EDCBD2",
       backgroundColor: "#80C4B7",
       darkFontColor: "#E3856B",
+      lightColor: "#D3C5E5",
+      darkColor: "#735DA5",
       cards: [
         { 
           text: "Did you get older doing nothing today?",
           fontColor: "#FFE4B5",
           backgroundColor: "#4682B4",
-          darkFontColor: "#CD853F"
+          darkFontColor: "#CD853F",
+          lightColor: "#E9E7E0",
+          darkColor: "#EB6F46"
         },
         { text: "Don't you wanna stop complaining?" },
       ]
@@ -28,6 +32,8 @@ export const useCollectionsStore = defineStore('collections', () => {
       fontColor: "#FFE4B5",
       backgroundColor: "#4682B4",
       darkFontColor: "#CD853F",
+      lightColor: "#8EC9BC",
+      darkColor: "#FBF5AA",
       cards: [
         { 
           text: "Did you get older doing nothing today?",
