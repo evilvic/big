@@ -1,6 +1,6 @@
 // src/stores/collections.js
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
 export const useCollectionsStore = defineStore('collections', () => {
   const collections = ref([
@@ -8,38 +8,58 @@ export const useCollectionsStore = defineStore('collections', () => {
       id: 1,
       title: "Motivational Quotes",
       description: "A collection of motivational quotes to stay motivated and focused.",
-      fontColor: "#EDCBD2",
-      backgroundColor: "#80C4B7",
-      darkFontColor: "#E3856B",
-      lightColor: "#D3C5E5",
-      darkColor: "#735DA5",
+      lightColor: "rgb(160, 220, 255)",
+      darkColor: "rgb(80, 115, 255)",
       cards: [
         { 
           text: "Did you get older doing nothing today?",
-          fontColor: "#FFE4B5",
-          backgroundColor: "#4682B4",
-          darkFontColor: "#CD853F",
-          lightColor: "#E9E7E0",
-          darkColor: "#EB6F46"
+          lightColor: "rgb(255, 160, 165)",
+          darkColor: "rgb(250, 50, 60)"
         },
         { text: "Don't you wanna stop complaining?" },
       ]
     },
     {
       id: 2,
-      title: "Quotes",
-      description: "A collection of inspiring quotes to keep you motivated and focused.",
-      fontColor: "#FFE4B5",
-      backgroundColor: "#4682B4",
-      darkFontColor: "#CD853F",
-      lightColor: "#8EC9BC",
-      darkColor: "#FBF5AA",
+      title: "Rules",
+      description: "Just follow these rules to stay motivated and focused.",
+      lightColor: "rgb(255, 160, 165)",
+      darkColor: "rgb(250, 50, 60)",
       cards: [
         { 
           text: "Did you get older doing nothing today?",
-          fontColor: "#EDCBD2",
-          backgroundColor: "#80C4B7",
-          darkFontColor: "#E3856B",
+          lightColor: "rgb(255, 160, 165)",
+          darkColor: "rgb(250, 50, 60)"
+        },
+        { text: "Don't you wanna stop complaining?" },
+      ]
+    },
+    {
+      id: 3,
+      title: "Quotes",
+      description: "A collection of inspiring quotes to keep you motivated and focused.",
+      lightColor: "rgb(125, 230, 210)",
+      darkColor: "rgb(5, 200, 170)",
+      cards: [
+        { 
+          text: "Stupid is what stupid does",
+          lightColor: "rgb(255, 250, 180)",
+          darkColor: "rgb(255, 215, 90)",
+        },
+        { text: "Water your plants" },
+      ]
+    },
+    {
+      id: 3,
+      title: "Rules",
+      description: "Just follow these rules to stay motivated and focused.",
+      lightColor: "rgb(255, 250, 180)",
+      darkColor: "rgb(255, 215, 90)",
+      cards: [
+        { 
+          text: "Did you get older doing nothing today?",
+          lightColor: "rgb(255, 160, 165)",
+          darkColor: "rgb(250, 50, 60)"
         },
         { text: "Don't you wanna stop complaining?" },
       ]

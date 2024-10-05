@@ -2,17 +2,20 @@
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCollectionsStore } from '@/stores/collectionStore'
+import { useThemeStore } from '@/stores/themeStore'
 import Slider from '@/components/SliderComponent.vue'
 
 const route = useRoute()
-const store = useCollectionsStore()
+const collectionsStore = useCollectionsStore()
+const themeStore = useThemeStore()
 
-const currentCollection = computed(() => store.currentCollection)
-const cards = computed(() => store.currentCollection?.cards || [])
+const currentCollection = computed(() => collectionsStore.currentCollection)
+const cards = computed(() => collectionsStore.currentCollection?.cards || [])
+const isDarkMode = computed(() => themeStore.isDarkMode)
 
 onMounted(() => {
-  if (!store.currentCollection) {
-    store.setCurrentCollection(parseInt(route.params.id))
+  if (!collectionsStore.currentCollection) {
+    collectionsStore.setCurrentCollection(parseInt(route.params.id))
   }
 })
 </script>
@@ -21,9 +24,9 @@ onMounted(() => {
   <div class="container">
     <Slider 
       :cards="cards"
-      :collectionFontColor="currentCollection.fontColor"
-      :collectionBackgroundColor="currentCollection.backgroundColor"
-      :collectionDarkFontColor="currentCollection.darkFontColor"
+      :collectionLightColor="currentCollection.lightColor"
+      :collectionDarkColor="currentCollection.darkColor"
+      :isDarkMode="isDarkMode"
     />
   </div>
 </template>

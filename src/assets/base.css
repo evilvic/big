@@ -3,7 +3,7 @@
 :root {
   --white: #FFFFFF;
   --light: #DEE4E7;
-  --dark: #222222;
+  --dark: #282828;
   --black: #121212;
 }
 
@@ -29,7 +29,6 @@
   padding: 0;
   font-family: 'Alice', serif;
   font-weight: 400;
-  color: var(--text-clr);
 }
 
 body {
@@ -46,8 +45,8 @@ h1 {
 }
 
 h2 {
-  font-family: 'Syne', sans-serif;
-  font-weight: 500;
+  font-family: 'Barrio', sans-serif;
+  font-weight: 400;
   font-size: 2rem;
   line-height: 1.2;
 }
@@ -57,4 +56,5 @@ p {
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 1;
+  color: var(--dark);
 }

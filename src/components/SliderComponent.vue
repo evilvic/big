@@ -6,22 +6,10 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const props = defineProps({
-  cards: {
-    type: Array,
-    required: true
-  },
-  collectionFontColor: {
-    type: String,
-    required: true,
-  },
-  collectionBackgroundColor: {
-    type: String,
-    required: true,
-  },
-  collectionDarkFontColor: {
-    type: String,
-    required: true,
-  }
+  cards: { type: Array, required: true },
+  collectionLightColor: { type: String, required: true },
+  collectionDarkColor: { type: String, required: true },
+  isDarkMode: { type: Boolean, required: true }
 })
 
 const currentIndex = ref(0)
@@ -123,12 +111,11 @@ watch(currentIndex, (newIndex, oldIndex) => {
         v-for="(card, index) in cards"
         :key="index"
         :text="card.text"
-        :fontColor="card.fontColor"
-        :backgroundColor="card.backgroundColor"
-        :darkFontColor="card.darkFontColor"
-        :collectionFontColor="collectionFontColor"
-        :collectionBackgroundColor="collectionBackgroundColor"
-        :collectionDarkFontColor="collectionDarkFontColor"
+        :lightColor="card.lightColor"
+        :darkColor="card.darkColor"
+        :collectionLightColor="collectionLightColor"
+        :collectionDarkColor="collectionDarkColor"
+        :isDarkMode="isDarkMode"
         class="slider-item"
         :class="{ 'current': index === currentIndex }"
       />

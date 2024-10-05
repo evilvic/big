@@ -2,23 +2,27 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollectionsStore } from '@/stores/collectionStore'
+import { useThemeStore } from '@/stores/themeStore'
 import { storeToRefs } from 'pinia'
+import CollectionTitle from '@/components/ButtonComponent.vue'
 import('@/views/HomeView.vue')
 
-const store = useCollectionsStore()
+const collectionsStore = useCollectionsStore()
+const themeStore = useThemeStore()
 const router = useRouter()
 
-const { collections } = storeToRefs(store)
+const { collections } = storeToRefs(collectionsStore)
+const { isDarkMode } = storeToRefs(themeStore)
 
 const touchTimeout = ref(null)
-const isDarkMode = ref(false)
+const titleRefs = ref([])
 
 const navigateToCollection = (collectionId) => {
   router.push({ name: 'collection', params: { id: collectionId } })
 }
 
 const prefetchCollection = (collectionId) => {
-  store.setCurrentCollection(collectionId)
+  collectionsStore.setCurrentCollection(collectionId)
 }
 
 const handleTouchStart = (collectionId) => {
@@ -35,25 +39,11 @@ const handleTouchEnd = () => {
 
 const getCollectionStyle = (collection) => {
   return {
-    backgroundColor: isDarkMode.value ? "#2B2B2B" : collection.lightColor,
-    color: isDarkMode.value ? collection.lightColor : collection.darkColor,
+    backgroundColor: collection.darkColor,
+    color: collection.lightColor
   }
 }
 
-const updateColorScheme = (e) => {
-  isDarkMode.value = e.matches
-}
-
-onMounted(() => {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  isDarkMode.value = mediaQuery.matches
-  mediaQuery.addEventListener('change', updateColorScheme)
-})
-
-onUnmounted(() => {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  mediaQuery.removeEventListener('change', updateColorScheme)
-})
 </script>
 
 <template>
@@ -70,12 +60,12 @@ onUnmounted(() => {
         @touchcancel="handleTouchEnd"
         :style="getCollectionStyle(collection)"
       >
-        <h2>
-          {{ collection.title }}
-        </h2>
-        <p>
-          {{ collection.description }}
-        </p>
+        <CollectionTitle 
+          :title="collection.title"
+          :lightColor="collection.lightColor"
+          :darkColor="collection.darkColor"
+          :isDarkMode="isDarkMode"
+        />
       </li>
     </ul>
   </div>
@@ -89,16 +79,28 @@ onUnmounted(() => {
 .collections-list {
   list-style-type: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .collections-list li {
   cursor: pointer;
   padding: 20px;
-  margin: 10px 0;
-  border-radius: 5px;
+  border-radius: 15px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 h2 {
   color: inherit;
+  margin: 0;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  transition: font-size 0.3s ease;
 }
 </style>

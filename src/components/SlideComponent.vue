@@ -2,39 +2,19 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 const props = defineProps({
-  text: {
-    type: String,
-    required: true,
-  },
-  fontColor: {
-    type: String,
-    // default: '#FFF2D7',
-  },
-  backgroundColor: {
-    type: String,
-    // default: '#F98866',
-  },
-  darkFontColor: {
-    type: String,
-    default: '',
-  },
-  collectionFontColor: {
-    type: String,
-    required: true,
-  },
-  collectionBackgroundColor: {
-    type: String,
-    required: true,
-  },
-  collectionDarkFontColor: {
-    type: String,
-    required: true,
-  }
+  text: { type: String, required: true },
+  lightColor: { type: String },
+  darkColor: { type: String },
+  collectionLightColor: { type: String, required: true },
+  collectionDarkColor: { type: String, required: true },
+  isDarkMode: { type: Boolean, required: true }
 })
 
-const effectiveFontColor = computed(() => props.fontColor || props.collectionFontColor)
-const effectiveBackgroundColor = computed(() => props.backgroundColor || props.collectionBackgroundColor)
-const effectiveDarkFontColor = computed(() => props.darkFontColor || props.collectionDarkFontColor)
+const effectiveLightColor = computed(() => props.lightColor || props.collectionLightColor)
+const effectiveDarkColor = computed(() => props.darkColor || props.collectionDarkColor)
+
+const backgroundColor = computed(() => props.isDarkMode ? effectiveDarkColor.value : effectiveLightColor.value)
+const textColor = computed(() => props.isDarkMode ? effectiveLightColor.value : effectiveDarkColor.value)
 
 const words = ref(props.text.split(' '))
 const containerRef = ref(null)
@@ -83,15 +63,15 @@ const adjustLayout = () => {
 
   container.innerHTML = ''
   const rowElements = rows.map(row => {
-    const div = document.createElement('div')
-    div.style.textAlign = 'center'
-    div.style.lineHeight = '0.9'
-    div.style.whiteSpace = 'nowrap'
-    div.style.fontFamily = 'Barrio, sans-serif'
-    div.style.color = props.effectiveFontColor
-    div.textContent = row.join(' ')
-    container.appendChild(div)
-    return div
+    const span = document.createElement('span')
+    span.style.textAlign = 'center'
+    span.style.lineHeight = '0.9'
+    span.style.whiteSpace = 'nowrap'
+    span.style.fontFamily = 'Barrio, sans-serif'
+    span.style.color = textColor
+    span.textContent = row.join(' ')
+    container.appendChild(span)
+    return span
   })
 
   const fontSizes = rowElements.map(row => {
@@ -146,8 +126,8 @@ onUnmounted(() => {
   <article 
     ref="containerRef" 
     :style="{ 
-      backgroundColor: effectiveBackgroundColor,
-      color: effectiveFontColor
+      backgroundColor: backgroundColor,
+      color: textColor
     }"
   ></article>
 </template>
@@ -163,5 +143,8 @@ article {
   padding: 0 20px;
   box-sizing: border-box;
   overflow: hidden;
+}
+span {
+  color: inherit;
 }
 </style>
