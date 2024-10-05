@@ -5,7 +5,7 @@ import { useCollectionsStore } from '@/stores/collectionStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { storeToRefs } from 'pinia'
 import CollectionTitle from '@/components/ButtonComponent.vue'
-import('@/views/HomeView.vue')
+import('@/views/SlidesView.vue')
 
 const collectionsStore = useCollectionsStore()
 const themeStore = useThemeStore()
@@ -18,7 +18,7 @@ const touchTimeout = ref(null)
 const titleRefs = ref([])
 
 const navigateToCollection = (collectionId) => {
-  router.push({ name: 'collection', params: { id: collectionId } })
+  router.push({ name: 'slides', params: { id: collectionId } })
 }
 
 const prefetchCollection = (collectionId) => {

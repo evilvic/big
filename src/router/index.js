@@ -10,9 +10,9 @@ const router = createRouter({
       component: () => import('@/views/CollectionsView.vue')
     },
     {
-      path: '/collection/:id',
-      name: 'collection',
-      component: () => import('@/views/HomeView.vue'),
+      path: '/slides/:id',
+      name: 'slides',
+      component: () => import('@/views/SlidesView.vue'),
     }
   ]
 })
