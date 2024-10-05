@@ -24,6 +24,5 @@ const props = defineProps({
   font-size: 2rem;
   line-height: 1.2;
   word-break: break-word;
-  box-sizing: border-box;
 }
 </style>

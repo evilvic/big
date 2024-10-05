@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 import { useCollectionsStore } from '@/stores/collectionStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { storeToRefs } from 'pinia'
@@ -15,7 +15,6 @@ const { collections } = storeToRefs(collectionsStore)
 const { isDarkMode } = storeToRefs(themeStore)
 
 const touchTimeout = ref(null)
-const titleRefs = ref([])
 
 const navigateToCollection = (collectionId) => {
   router.push({ name: 'slides', params: { id: collectionId } })
@@ -47,28 +46,33 @@ const getCollectionStyle = (collection) => {
 </script>
 
 <template>
-  <div class="collections-container">
-    <h1>Collections</h1>
-    <ul class="collections-list">
-      <li
-        v-for="collection in collections" 
-        :key="collection.id" 
-        @click="navigateToCollection(collection.id)"
-        @mouseover="prefetchCollection(collection.id)"
-        @touchstart="handleTouchStart(collection.id)"
-        @touchend="handleTouchEnd"
-        @touchcancel="handleTouchEnd"
-        :style="getCollectionStyle(collection)"
-      >
-        <CollectionTitle 
-          :title="collection.title"
-          :lightColor="collection.lightColor"
-          :darkColor="collection.darkColor"
-          :isDarkMode="isDarkMode"
-        />
-      </li>
-    </ul>
-  </div>
+  <main>
+    <div class="collections-container">
+      <!-- <h1>Collections</h1> -->
+      <ul class="collections-list">
+        <li
+          v-for="collection in collections" 
+          :key="collection.id" 
+          @click="navigateToCollection(collection.id)"
+          @mouseover="prefetchCollection(collection.id)"
+          @touchstart="handleTouchStart(collection.id)"
+          @touchend="handleTouchEnd"
+          @touchcancel="handleTouchEnd"
+          :style="getCollectionStyle(collection)"
+        >
+          <CollectionTitle 
+            :title="collection.title"
+            :lightColor="collection.lightColor"
+            :darkColor="collection.darkColor"
+            :isDarkMode="isDarkMode"
+          />
+        </li>
+      </ul>
+      <RouterLink to="/collections/new" class="new">
+        + New collection
+      </RouterLink>
+    </div>
+  </main>
 </template>
 
 <style scoped>
@@ -101,5 +105,20 @@ h2 {
   word-break: break-word;
   line-height: 1.2;
   transition: font-size 0.3s ease;
+}
+
+.new {
+  width: 100%;
+  display: flex;
+  font-family: 'Barrio', sans-serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  word-break: break-word;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgb(25, 25, 25);
+  color: rgb(200, 200, 200);
+  border: none;
+  text-decoration: unset;
 }
 </style>

@@ -51,20 +51,14 @@ onMounted(() => {
   transition: all 0.6s cubic-bezier(.2,.8,.2,1);
 }
 
-.slide-left-enter-active {
-  z-index: 2;
-}
-
-.slide-left-leave-active {
-  z-index: 1;
-}
-
-.slide-right-enter-active {
-  z-index: 1;
-}
-
+.slide-left-enter-active,
 .slide-right-leave-active {
   z-index: 2;
+}
+
+.slide-left-leave-active,
+.slide-right-enter-active {
+  z-index: 1;
 }
 
 .slide-left-enter-from {
@@ -81,5 +75,10 @@ onMounted(() => {
 
 .slide-right-leave-to {
   transform: translateX(100%);
+}
+
+.slide-left-leave-active,
+.slide-right-leave-active {
+  transition: all 0.6s cubic-bezier(.2,.8,.2,1);
 }
 </style>
