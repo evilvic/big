@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted, toRaw } from 'vue';
+import { useRouter } from 'vue-router';
 import { useCollectionsStore } from '@/stores/collectionStore';
 
+const router = useRouter();
 const collectionStore = useCollectionsStore();
 const collections = ref([]);
 
@@ -19,17 +21,8 @@ onMounted(async () => {
 
 const createNewCollection = async () => {
   const plainCollection = toRaw(newCollection.value);
-  await collectionStore.createCollection(plainCollection);
-  newCollection.value = {
-    name: '',
-    description: '',
-    lightColor: '#ffffff',
-    darkColor: '#000000',
-  };
-};
-
-const deleteCollection = async (id) => {
-  await collectionStore.deleteCollection(id);
+  const id = await collectionStore.createCollection(plainCollection);
+  router.push({ name: 'collection-config', params: { id } });
 };
 </script>
 

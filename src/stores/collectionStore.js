@@ -23,6 +23,10 @@ export const useCollectionsStore = defineStore('collections', () => {
     return id
   }
 
+  const getCollection = async (id) => {
+    return await dataController.getCollection(id)
+  }
+
   const updateCollection = async (collection) => {
     await dataController.updateCollection(collection)
     await fetchAllCollections()
@@ -47,6 +51,7 @@ export const useCollectionsStore = defineStore('collections', () => {
     collections,
     initializeStore,
     createCollection,
+    getCollection,
     updateCollection,
     deleteCollection,
     setCurrentCollection,

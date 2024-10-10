@@ -15,9 +15,14 @@ const { collections } = storeToRefs(collectionsStore)
 const { isDarkMode } = storeToRefs(themeStore)
 
 const touchTimeout = ref(null)
+const longPressDelay = 1000
 
 const navigateToCollection = (collectionId) => {
   router.push({ name: 'slides', params: { id: collectionId } })
+}
+
+const navigateToConfig = (collectionId) => {
+  router.push({ name: 'collection-config', params: { id: collectionId } })
 }
 
 const prefetchCollection = (collectionId) => {
@@ -26,13 +31,16 @@ const prefetchCollection = (collectionId) => {
 
 const handleTouchStart = (collectionId) => {
   touchTimeout.value = setTimeout(() => {
-    prefetchCollection(collectionId)
-  }, 100)
+    navigateToConfig(collectionId)
+  }, longPressDelay)
 }
 
-const handleTouchEnd = () => {
+const handleTouchEnd = (event, collectionId) => {
   if (touchTimeout.value) {
     clearTimeout(touchTimeout.value)
+    if (event.type !== 'click') {
+      navigateToCollection(collectionId)
+    }
   }
 }
 
@@ -42,13 +50,11 @@ const getCollectionStyle = (collection) => {
     color: collection.lightColor
   }
 }
-
 </script>
 
 <template>
   <main>
     <div class="collections-container">
-      <!-- <h1>Collections</h1> -->
       <ul class="collections-list">
         <li
           v-for="collection in collections" 

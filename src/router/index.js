@@ -18,6 +18,11 @@ const router = createRouter({
       path: '/slides/:id',
       name: 'slides',
       component: () => import('@/views/SlidesView.vue'),
+    },
+    {
+      path: '/collections/:id/config',
+      name: 'collection-config',
+      component: () => import('@/views/CollectionConfigView.vue'),
     }
   ]
 })
