@@ -1,15 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRaw } from 'vue';
 import { useCollectionsStore } from '@/stores/collectionStore';
 
 const collectionStore = useCollectionsStore();
 const collections = ref([]);
 
 const newCollection = ref({
-  name: '',
-  description: '',
-  lightColor: '#ffffff',
-  darkColor: '#000000',
+  name: "Motivational Quotes",
+  description: "A collection of motivational quotes to stay motivated and focused.",
+  lightColor: "rgb(160, 220, 255)",
+  darkColor: "rgb(80, 115, 255)",
 });
 
 onMounted(async () => {
@@ -18,7 +18,8 @@ onMounted(async () => {
 });
 
 const createNewCollection = async () => {
-  await collectionStore.createCollection(newCollection.value);
+  const plainCollection = toRaw(newCollection.value);
+  await collectionStore.createCollection(plainCollection);
   newCollection.value = {
     name: '',
     description: '',

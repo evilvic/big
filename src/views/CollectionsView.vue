@@ -61,7 +61,7 @@ const getCollectionStyle = (collection) => {
           :style="getCollectionStyle(collection)"
         >
           <CollectionTitle 
-            :title="collection.title"
+            :title="collection.name"
             :lightColor="collection.lightColor"
             :darkColor="collection.darkColor"
             :isDarkMode="isDarkMode"

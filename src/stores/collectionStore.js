@@ -17,8 +17,9 @@ export const useCollectionsStore = defineStore('collections', () => {
   }
 
   const createCollection = async (collection) => {
+    const plainCollection = JSON.parse(JSON.stringify(collection));
     const id = await dataController.createCollection(collection)
-    await fetchAllCollections()
+    collections.value.push({ ...plainCollection, id });
     return id
   }
 
