@@ -1,10 +1,10 @@
 <script setup>
 import { ref, onMounted, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
-import { useCollectionsStore } from '@/stores/collectionStore';
+import { useDecksStore } from '@/stores/decksStore';
 
 const router = useRouter();
-const collectionStore = useCollectionsStore();
+const collectionStore = useDecksStore();
 const collections = ref([]);
 
 const newCollection = ref({

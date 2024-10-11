@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collectionStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +21,7 @@ const router = createRouter({
     {
       path: '/collections/:id/config',
       name: 'collection-config',
-      component: () => import('@/views/CollectionConfigView.vue'),
+      component: () => import('@/views/DeckConfigView.vue'),
     }
   ]
 })

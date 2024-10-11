@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collectionStore'
+import { useDecksStore } from '@/stores/decksStore'
 import { useThemeStore } from '@/stores/themeStore'
 import Slider from '@/components/SliderComponent.vue'
 
 const route = useRoute()
-const collectionsStore = useCollectionsStore()
+const collectionsStore = useDecksStore()
 const themeStore = useThemeStore()
 
 const currentCollection = computed(() => collectionsStore.currentCollection)

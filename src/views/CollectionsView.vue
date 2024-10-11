@@ -1,13 +1,13 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
-import { useCollectionsStore } from '@/stores/collectionStore'
+import { useDecksStore } from '@/stores/decksStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { storeToRefs } from 'pinia'
 import CollectionTitle from '@/components/ButtonComponent.vue'
 import('@/views/SlidesView.vue')
 
-const collectionsStore = useCollectionsStore()
+const collectionsStore = useDecksStore()
 const themeStore = useThemeStore()
 const router = useRouter()
 
