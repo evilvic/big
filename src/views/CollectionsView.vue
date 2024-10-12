@@ -113,18 +113,5 @@ h2 {
   transition: font-size 0.3s ease;
 }
 
-.new {
-  width: 100%;
-  display: flex;
-  font-family: 'Barrio', sans-serif;
-  font-size: 2rem;
-  line-height: 1.2;
-  word-break: break-word;
-  padding: 20px;
-  border-radius: 15px;
-  background: rgb(25, 25, 25);
-  color: rgb(200, 200, 200);
-  border: none;
-  text-decoration: unset;
-}
+
 </style>
