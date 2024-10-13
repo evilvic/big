@@ -22,6 +22,8 @@ const deck = ref({
   darkColor: "#292929"
 });
 
+const originalDeck = ref(null);
+
 const nameLength = computed(() => deck.value.name.length);
 const descriptionLength = computed(() => deck.value.description.length);
 
@@ -30,13 +32,22 @@ const isDescriptionValid = computed(() => descriptionLength.value <= 64);
 const isColorSelected = computed(() => deck.value.lightColor !== "");
 const isFormValid = computed(() => isNameValid.value && isDescriptionValid.value && isColorSelected.value);
 
+const hasDeckChanged = computed(() => {
+  if (!originalDeck.value) return false;
+  return (
+    deck.value.name !== originalDeck.value.name ||
+    deck.value.description !== originalDeck.value.description ||
+    deck.value.lightColor !== originalDeck.value.lightColor
+  );
+});
+
 onMounted(async () => {
   const id = parseInt(route.params.id);
   const fetchedDeck = await decksStore.getDeck(id);
   if (fetchedDeck) {
     deck.value = { ...fetchedDeck };
+    originalDeck.value = { ...fetchedDeck };
   } else {
-    // Manejar el caso en que el deck no se encuentra
     console.error('Deck not found');
     router.push({ name: 'decks' });
   }
@@ -65,7 +76,7 @@ const deleteDeck = async () => {
   <main>
     <form @submit.prevent="updateDeck">
       <label for="deck-name">
-        Name*
+        deck name*
       </label>
       <input
         id="deck-name"
@@ -82,7 +93,7 @@ const deleteDeck = async () => {
       </span>
 
       <label for="deck-description">
-        Deck description
+        deck description
       </label>
       <textarea
         id="deck-description"
@@ -98,7 +109,7 @@ const deleteDeck = async () => {
       </span>
 
       <label id="color-picker">
-        Color*
+        deck color*
       </label>
       <div
         id="color-picker"
@@ -120,27 +131,27 @@ const deleteDeck = async () => {
           tabindex="0"
         ></div>
       </div>
-
-      <button @click="deleteDeck" class="delete-button">
-        Delete deck
-      </button>
-
       <button
         type="submit"
-        :disabled="!isFormValid"
+        :disabled="!isFormValid || !hasDeckChanged"
       >
         Update deck
       </button>
     </form>
+    <button @click="deleteDeck" class="delete-button">
+        Delete deck
+      </button>
   </main>
 </template>
 
 <style scoped>
-.delete-button {
+form {
   margin-top: 40px;
 }
 button[type="submit"] {
+  margin-top: 80px;
+}
+.delete-button {
   margin-top: 20px;
 }
-
 </style>
