@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import { IndexedDBController } from '@/data/indexedDBController'
 
 export const useCardsStore = defineStore('cards', () => {
-  const dataController = new IndexedDBController.getInstance()
+  const dataController = IndexedDBController.getInstance()
   const cards = ref([])
+  const isInitialized = ref(false)
 
   const fetchCardsByDeckId = async (deckId) => {
     cards.value = await dataController.getCardsByDeckId(deckId)

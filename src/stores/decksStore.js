@@ -5,12 +5,16 @@ import { IndexedDBController } from '@/data/indexedDBController'
 export const useDecksStore = defineStore('decks', () => {
   const dataController = IndexedDBController.getInstance()
   const decks = ref([])
+  const isInitialized = ref(false)
 
   const initializeStore = async () => {
-    await fetchAllDecks()
+    if (!isInitialized.value) {
+      await fetchDecks()
+      isInitialized.value = true
+    }
   }
 
-  const fetchAllDecks = async () => {
+  const fetchDecks = async () => {
     decks.value = await dataController.getAllDecks()
   }
 
@@ -27,12 +31,12 @@ export const useDecksStore = defineStore('decks', () => {
 
   const updateDeck = async (deck) => {
     await dataController.updateDeck(deck)
-    await fetchAllDecks()
+    await fetchDecks()
   }
 
   const deleteDeck = async (id) => {
     await dataController.deleteDeck(id)
-    await fetchAllDecks()
+    await fetchDecks()
   }
 
   const currentDeckId = ref(null)
@@ -48,6 +52,7 @@ export const useDecksStore = defineStore('decks', () => {
   return {
     decks,
     initializeStore,
+    fetchDecks,
     createDeck,
     getDeck,
     updateDeck,

@@ -3,14 +3,11 @@ import { computed } from 'vue'
 
 const props = defineProps({
   title: { type: String, required: true },
-  lightColor: { type: String, required: true },
-  darkColor: { type: String, required: true },
-  isDarkMode: { type: Boolean, required: true }
 })
 </script>
 
 <template>
-  <div class="collection-title" :style="{ color: lightColor }">
+  <div class="collection-title">
     {{ title }}
   </div>
 </template>
@@ -24,5 +21,6 @@ const props = defineProps({
   font-size: 2rem;
   line-height: 1.2;
   word-break: break-word;
+  color: var(--black);
 }
 </style>

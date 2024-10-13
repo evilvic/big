@@ -1,0 +1,153 @@
+<script setup>
+import { ref, computed, toRaw } from 'vue';
+import { useRouter } from 'vue-router';
+import { useDecksStore } from '@/stores/decksStore';
+
+const router = useRouter();
+const decksStore = useDecksStore();
+
+const colorOptions = {
+  red: '#FB4A4B',
+  yellow: '#FFDE6B',
+  blue: '#618DFF',
+  green: '#8DE8D7'
+};
+
+const newDeck = ref({
+  name: "",
+  description: "",
+  lightColor: "",
+  darkColor: "#292929"
+});
+
+const nameLength = computed(() => newDeck.value.name.length);
+const descriptionLength = computed(() => newDeck.value.description.length);
+
+const isNameValid = computed(() => nameLength.value > 0 && nameLength.value <= 24);
+const isDescriptionValid = computed(() => descriptionLength.value <= 64);
+const isColorSelected = computed(() => newDeck.value.lightColor !== "");
+const isFormValid = computed(() => isNameValid.value && isDescriptionValid.value && isColorSelected.value);
+
+const selectColor = (color) => {
+  newDeck.value.lightColor = color;
+};
+
+const createNewDeck = async () => {
+  if (isFormValid.value) {
+    const rawDeck = toRaw(newDeck.value);
+    const id = await decksStore.createDeck(rawDeck);
+    router.push({ name: 'deck-config', params: { id } });
+  }
+};
+</script>
+
+<template>
+  <main>
+    <form @submit.prevent="createNewDeck">
+      <label for="deck-name">
+        Name*
+      </label>
+      <input
+        id="deck-name"
+        type="text"
+        v-model="newDeck.name"
+        placeholder="[epic] [deck] [title]"
+        :class="{ 'invalid': !isNameValid && nameLength > 0 }"
+      >
+      <span
+        class="chars-limit"
+        :class="{ 'error': !isNameValid && nameLength > 0 }"
+      >
+        {{ nameLength }}/24 chars
+      </span>
+
+      <label for="deck-description">
+        Description
+      </label>
+      <textarea
+        id="deck-description"
+        v-model="newDeck.description"
+        placeholder="[why] [this] [deck] [rocks]"
+        :class="{ 'invalid': !isDescriptionValid && descriptionLength > 0 }"
+      />
+      <span
+        class="chars-limit"
+        :class="{ 'error': !isDescriptionValid && descriptionLength > 0 }"
+      >
+        {{ descriptionLength }}/64 chars
+      </span>
+
+      <label id="color-picker">
+        Color*
+      </label>
+      <div
+        id="color-picker"
+        class="color-picker"
+        role="radiogroup"
+        aria-labelledby="color-picker"
+        tabindex="0"
+      >
+        <div 
+          v-for="(color, name) in colorOptions" 
+          :key="name"
+          class="color-circle"
+          :style="{ backgroundColor: color }"
+          @click="selectColor(color)"
+          @keydown="handleColorKeydown($event, color)"
+          :class="{ 'selected': newDeck.lightColor === color }"
+          role="radio"
+          :aria-checked="newDeck.lightColor === color"
+          :aria-label="`Select ${name} color`"
+          tabindex="0"
+        ></div>
+      </div>
+
+      <button
+        type="submit"
+        :disabled="!isFormValid"
+      >
+        Create deck >
+      </button>
+    </form>
+  </main>
+</template>
+
+<style scoped>
+.chars-limit {
+  align-self: flex-end;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--light-gray);
+  margin-bottom: 32px;
+}
+
+.chars-limit.error {
+  color: var(--error);
+}
+
+.invalid {
+  border: 2px solid var(--error);
+}
+
+.color-picker {
+  display: flex;
+  gap: 16px;
+}
+
+.color-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--light-gray);
+}
+
+.color-circle.selected {
+  border: 4px solid var(--white);
+}
+
+button {
+  margin-top: 80px;
+}
+</style>

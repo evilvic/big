@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useDecksStore } from '@/stores/deckStore';
+import { useDecksStore } from '@/stores/decksStore';
 import { useCardsStore } from '@/stores/cardsStore';
 
 const route = useRoute();

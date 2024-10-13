@@ -5,23 +5,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'collections',
-      component: () => import('@/views/CollectionsView.vue')
+      name: 'decks',
+      component: () => import('@/views/DecksView.vue')
     },
     {
-      path: '/collections/new',
-      name: 'new-collection',
-      component: () => import('@/views/NewCollectionView.vue')
+      path: '/decks/new',
+      name: 'new-deck',
+      component: () => import('@/views/NewDeckView.vue')
+    },
+    {
+      path: '/decks/:id/config',
+      name: 'deck-config',
+      component: () => import('@/views/DeckConfigView.vue'),
     },
     {
       path: '/slides/:id',
       name: 'slides',
       component: () => import('@/views/SlidesView.vue'),
-    },
-    {
-      path: '/collections/:id/config',
-      name: 'collection-config',
-      component: () => import('@/views/DeckConfigView.vue'),
     }
   ]
 })
