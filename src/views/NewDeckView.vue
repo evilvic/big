@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, toRaw } from 'vue';
+import { ref, computed, toRaw, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 
@@ -39,6 +39,37 @@ const createNewDeck = async () => {
     router.push({ name: 'new-card', params: { id } });
   }
 };
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+const handleTouchStart = (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+};
+
+const handleTouchEnd = (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+};
+
+const handleSwipe = () => {
+  const swipeThreshold = 300;
+  if (touchStartX - touchEndX > swipeThreshold) {
+    // Swipe left, do nothing or implement forward functionality if needed
+  } else if (touchEndX - touchStartX > swipeThreshold) {
+    router.go(-1);
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('touchstart', handleTouchStart, false);
+  document.addEventListener('touchend', handleTouchEnd, false);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('touchstart', handleTouchStart, false);
+  document.removeEventListener('touchend', handleTouchEnd, false);
+});
 </script>
 
 <template>
@@ -113,8 +144,10 @@ const createNewDeck = async () => {
 </template>
 
 <style scoped>
-
-button {
+form {
+  margin-top: 40px;
+}
+button[type="submit"] {
   margin-top: 80px;
 }
 </style>
