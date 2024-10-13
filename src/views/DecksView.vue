@@ -82,7 +82,7 @@ onUnmounted(() => {
       </li>
     </ul>
     <RouterLink to="/decks/new" class="new-deck-link">
-      New deck >
+      new deck >
     </RouterLink>
   </main>
 </template>

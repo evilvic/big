@@ -27,7 +27,8 @@ onMounted(async () => {
 
 const addCard = async () => {
   if (isTextValid.value) {
-    await cardsStore.createCard(newCard.value);
+    const rawCard = toRaw(newCard.value);
+    await cardsStore.createCard(rawCard);
     router.push('/');
   }
 };

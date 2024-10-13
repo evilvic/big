@@ -96,6 +96,7 @@ a, button {
   word-break: break-word;
   text-align: right;
   text-decoration: unset;
+  text-wrap: balance;
   color: var(--text);
   background: var(--active-button);
 

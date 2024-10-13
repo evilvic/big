@@ -16,6 +16,10 @@ const error = ref(null)
 
 const cards = computed(() => cardsStore.cards)
 
+const goBackToDecks = () => {
+  router.push({ name: 'decks' })
+}
+
 onMounted(async () => {
   try {
     const deckId = parseInt(route.params.id)
@@ -42,16 +46,18 @@ onMounted(async () => {
       {{ error }}
       <button @click="goBackToDecks">Go back to decks</button>
     </div>
-    <Slider
-      v-else
-      :cards="cards"
-      :collectionLightColor="currentDeck.lightColor"
-      :collectionDarkColor="currentDeck.darkColor"
-    />
-    <div v-else class="no-cards">
+    <template v-else>
+      <Slider
+        v-if="cards.length > 0"
+        :cards="cards"
+        :collectionLightColor="currentDeck.lightColor"
+        :collectionDarkColor="currentDeck.darkColor"
+      />
+      <div v-else class="no-cards">
         This deck has no cards yet.
         <button @click="goBackToDecks">Go back to decks</button>
       </div>
+    </template>
   </div>
 </template>
 
