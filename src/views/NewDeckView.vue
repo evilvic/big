@@ -1,23 +1,24 @@
 <script setup>
-import { ref, computed, toRaw, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 
 const router = useRouter();
 const decksStore = useDecksStore();
 
-const colorOptions = {
-  red: '#FB4A4B',
-  yellow: '#FFDE6B',
-  blue: '#618DFF',
-  green: '#8DE8D7'
-};
+const colorOptions = [
+  {
+    name: "diet-green",
+    backgroundColor: "#8DE8D7",
+    color: "#595959"
+  },
+]
 
 const newDeck = ref({
   name: "",
   description: "",
   lightColor: "",
-  darkColor: "#292929"
+  darkColor: ""
 });
 
 const nameLength = computed(() => newDeck.value.name.length);
@@ -28,8 +29,9 @@ const isDescriptionValid = computed(() => descriptionLength.value <= 64);
 const isColorSelected = computed(() => newDeck.value.lightColor !== "");
 const isFormValid = computed(() => isNameValid.value && isDescriptionValid.value && isColorSelected.value);
 
-const selectColor = (color) => {
-  newDeck.value.lightColor = color;
+const selectColor = (backgroundColor, color) => {
+  newDeck.value.lightColor = backgroundColor;
+  newDeck.value.darkColor = color;
 };
 
 const createNewDeck = async () => {
@@ -76,7 +78,7 @@ onUnmounted(() => {
   <main>
     <form @submit.prevent="createNewDeck">
       <label for="deck-name">
-        Name*
+        deck name*
       </label>
       <input
         id="deck-name"
@@ -93,7 +95,7 @@ onUnmounted(() => {
       </span>
 
       <label for="deck-description">
-        Deck description
+        deck description
       </label>
       <textarea
         id="deck-description"
@@ -109,7 +111,7 @@ onUnmounted(() => {
       </span>
 
       <label id="color-picker">
-        Color*
+        deck color*
       </label>
       <div
         id="color-picker"
@@ -119,18 +121,19 @@ onUnmounted(() => {
         tabindex="0"
       >
         <div 
-          v-for="(color, name) in colorOptions" 
-          :key="name"
+          v-for="option in colorOptions" 
+          :key="option.name"
           class="color-circle"
-          :style="{ backgroundColor: color }"
-          @click="selectColor(color)"
-          @keydown="handleColorKeydown($event, color)"
-          :class="{ 'selected': newDeck.lightColor === color }"
+          @click="selectColor(option.backgroundColor, option.color)"
+          :class="{ 'selected': newDeck.lightColor === option.backgroundColor && newDeck.darkColor === option.color }"
           role="radio"
-          :aria-checked="newDeck.lightColor === color"
-          :aria-label="`Select ${name} color`"
+          :aria-checked="newDeck.lightColor === option.backgroundColor && newDeck.darkColor === option.color"
+          :aria-label="`Select ${option.name} color combination`"
           tabindex="0"
-        ></div>
+        >
+        <div class="color-half left" :style="{ backgroundColor: option.backgroundColor }"></div>
+        <div class="color-half right" :style="{ backgroundColor: option.textColor }"></div>
+        </div>
       </div>
 
       <button
