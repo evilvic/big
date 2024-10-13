@@ -22,13 +22,13 @@ const navigateToDeck = (deckId) => {
   router.push({ name: 'slides', params: { id: deckId } })
 }
 
-const navigateToDeckConfig = (deckId) => {
-  router.push({ name: 'deck-config', params: { id: deckId } })
+const navigateToDeckEdit = (deckId) => {
+  router.push({ name: 'edit-deck', params: { id: deckId } })
 }
 
 const handleTouchStart = (deckId) => {
   touchTimeout.value = setTimeout(() => {
-    navigateToDeckConfig(deckId)
+    navigateToDeckEdit(deckId)
   }, longPressDelay)
 }
 

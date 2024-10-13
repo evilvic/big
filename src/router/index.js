@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('@/views/NewDeckView.vue')
     },
     {
+      path: '/decks/:id/edit',
+      name: 'edit-deck',
+      component: () => import('@/views/EditDeckView.vue'),
+    },
+    {
       path: '/decks/:id/new-card',
       name: 'new-card',
       component: () => import('@/views/NewCardView.vue'),
