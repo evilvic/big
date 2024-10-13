@@ -9,7 +9,6 @@ const props = defineProps({
   cards: { type: Array, required: true },
   collectionLightColor: { type: String, required: true },
   collectionDarkColor: { type: String, required: true },
-  isDarkMode: { type: Boolean, required: true }
 })
 
 const currentIndex = ref(0)
@@ -32,7 +31,7 @@ const goToPrev = () => {
     direction.value = 'prev'
     currentIndex.value -= 1
   } else {
-    router.push({ name: 'collections' })
+    router.push({ name: 'decks' })
   }
 }
 
@@ -115,7 +114,6 @@ watch(currentIndex, (newIndex, oldIndex) => {
         :darkColor="card.darkColor"
         :collectionLightColor="collectionLightColor"
         :collectionDarkColor="collectionDarkColor"
-        :isDarkMode="isDarkMode"
         class="slider-item"
         :class="{ 'current': index === currentIndex }"
       />

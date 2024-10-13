@@ -9,3 +9,37 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.chars-limit {
+  align-self: flex-end;
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--light-gray);
+  margin-bottom: 32px;
+}
+
+.chars-limit.error {
+  color: var(--error);
+}
+
+.invalid {
+  border: 2px solid var(--error);
+}
+
+.color-picker {
+  display: flex;
+  gap: 16px;
+}
+
+.color-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 4px solid var(--light-gray);
+}
+
+.color-circle.selected {
+  border: 4px solid var(--white);
+}

@@ -7,14 +7,13 @@ const props = defineProps({
   darkColor: { type: String },
   collectionLightColor: { type: String, required: true },
   collectionDarkColor: { type: String, required: true },
-  isDarkMode: { type: Boolean, required: true }
 })
 
 const effectiveLightColor = computed(() => props.lightColor || props.collectionLightColor)
 const effectiveDarkColor = computed(() => props.darkColor || props.collectionDarkColor)
 
-const backgroundColor = computed(() => props.isDarkMode ? effectiveDarkColor.value : effectiveLightColor.value)
-const textColor = computed(() => props.isDarkMode ? effectiveLightColor.value : effectiveDarkColor.value)
+const backgroundColor = computed(() => effectiveLightColor.value)
+const textColor = computed(() => effectiveDarkColor.value)
 
 const words = ref(props.text.split(' '))
 const containerRef = ref(null)
