@@ -50,8 +50,8 @@ onMounted(async () => {
       <Slider
         v-if="cards.length > 0"
         :cards="cards"
-        :collectionLightColor="currentDeck.lightColor"
-        :collectionDarkColor="currentDeck.darkColor"
+        :collectionLightColor="currentDeck.backgroundColor"
+        :collectionDarkColor="currentDeck.color"
       />
       <div v-else class="no-cards">
         This deck has no cards yet.

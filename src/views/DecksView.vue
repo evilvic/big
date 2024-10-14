@@ -44,7 +44,7 @@ const handleTouchEnd = (event, deckId) => {
 
 const getDeckStyle = (deck) => {
   return {
-    backgroundColor: deck.lightColor,
+    backgroundColor: deck.backgroundColor,
   }
 }
 
@@ -75,8 +75,8 @@ onUnmounted(() => {
         >
           <DeckTitle 
             :title="deck.name"
-            :lightColor="deck.lightColor"
-            :darkColor="deck.darkColor"
+            :backgroundColor="deck.backgroundColor"
+            :color="deck.color"
           />
         </div>
       </li>

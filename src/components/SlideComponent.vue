@@ -3,14 +3,14 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 const props = defineProps({
   text: { type: String, required: true },
-  lightColor: { type: String },
-  darkColor: { type: String },
+  backgroundColor: { type: String },
+  color: { type: String },
   collectionLightColor: { type: String, required: true },
   collectionDarkColor: { type: String, required: true },
 })
 
-const effectiveLightColor = computed(() => props.lightColor || props.collectionLightColor)
-const effectiveDarkColor = computed(() => props.darkColor || props.collectionDarkColor)
+const effectiveLightColor = computed(() => props.backgroundColor || props.collectionLightColor)
+const effectiveDarkColor = computed(() => props.color || props.collectionDarkColor)
 
 const backgroundColor = computed(() => effectiveLightColor.value)
 const textColor = computed(() => effectiveDarkColor.value)
