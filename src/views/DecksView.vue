@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { storeToRefs } from 'pinia'
-import DeckTitle from '@/components/ButtonComponent.vue'
 import('@/views/SlidesView.vue')
 
 const decksStore = useDecksStore()
@@ -45,6 +44,7 @@ const handleTouchEnd = (event, deckId) => {
 const getDeckStyle = (deck) => {
   return {
     backgroundColor: deck.backgroundColor,
+    color: deck.color
   }
 }
 
@@ -73,11 +73,7 @@ onUnmounted(() => {
           tabindex="0"
           :aria-label="`Open deck: ${deck.name}`"
         >
-          <DeckTitle 
-            :title="deck.name"
-            :backgroundColor="deck.backgroundColor"
-            :color="deck.color"
-          />
+          {{ deck.name }}
         </div>
       </li>
     </ul>
@@ -102,9 +98,11 @@ onUnmounted(() => {
   border-radius: var(--border);
   display: flex;
   align-items: center;
-  justify-content: center;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Barrio', sans-serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 </style>

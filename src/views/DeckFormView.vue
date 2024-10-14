@@ -13,6 +13,11 @@ const colorOptions = [
     backgroundColor: "#8DE8D7",
     color: "#595959"
   },
+  {
+    name: "diet-green-inverted",
+    backgroundColor: "#595959",
+    color: "#8DE8D7"
+  },
 ]
 
 const deck = ref({
@@ -179,7 +184,7 @@ onUnmounted(() => {
           tabindex="0"
         >
         <div class="color-half left" :style="{ backgroundColor: option.backgroundColor }"></div>
-        <div class="color-half right" :style="{ backgroundColor: option.textColor }"></div>
+        <div class="color-half right" :style="{ backgroundColor: option.color }"></div>
         </div>
       </div>
 

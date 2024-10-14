@@ -19,10 +19,11 @@ export const useDecksStore = defineStore('decks', () => {
   }
 
   const createDeck = async (deck) => {
-    const plainDeck = JSON.parse(JSON.stringify(deck));
-    const id = await dataController.createDeck(plainDeck)
-    decks.value.push({ ...plainDeck, id });
-    return id
+    const { id, ...deckWithoutId } = deck;
+    const plainDeck = JSON.parse(JSON.stringify(deckWithoutId));
+    const newId = await dataController.createDeck(plainDeck)
+    decks.value.push({ ...plainDeck, id: newId });
+    return newId
   }
 
   const getDeck = async (id) => {
