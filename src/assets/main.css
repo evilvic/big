@@ -55,3 +55,9 @@
   background: var(--error);
   color: var(--white);
 }
+
+.back-button {
+  background: var(--background);
+  border-color: var(--background);
+  text-align: left;
+}

@@ -11,12 +11,12 @@ const router = createRouter({
     {
       path: '/decks/new',
       name: 'new-deck',
-      component: () => import('@/views/NewDeckView.vue')
+      component: () => import('@/views/DeckFormView.vue')
     },
     {
       path: '/decks/:id/edit',
       name: 'edit-deck',
-      component: () => import('@/views/EditDeckView.vue'),
+      component: () => import('@/views/DeckFormView.vue'),
     },
     {
       path: '/decks/:id/new-card',

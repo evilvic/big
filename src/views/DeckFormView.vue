@@ -1,8 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, toRaw } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 
+const route = useRoute();
 const router = useRouter();
 const decksStore = useDecksStore();
 
@@ -14,32 +15,62 @@ const colorOptions = [
   },
 ]
 
-const newDeck = ref({
+const deck = ref({
+  id: null,
   name: "",
   description: "",
-  lightColor: "",
-  darkColor: ""
+  backgroundColor: "",
+  color: ""
 });
 
-const nameLength = computed(() => newDeck.value.name.length);
-const descriptionLength = computed(() => newDeck.value.description.length);
+const originalDeck = ref(null);
+
+const isEditMode = computed(() => !!route.params.id);
+
+const nameLength = computed(() => deck.value.name.length);
+const descriptionLength = computed(() => deck.value.description.length);
 
 const isNameValid = computed(() => nameLength.value > 0 && nameLength.value <= 24);
 const isDescriptionValid = computed(() => descriptionLength.value <= 64);
-const isColorSelected = computed(() => newDeck.value.lightColor !== "");
+const isColorSelected = computed(() => deck.value.backgroundColor !== "");
 const isFormValid = computed(() => isNameValid.value && isDescriptionValid.value && isColorSelected.value);
 
+const hasDeckChanged = computed(() => {
+  if (!originalDeck.value) return false;
+  return (
+    deck.value.name !== originalDeck.value.name ||
+    deck.value.description !== originalDeck.value.description ||
+    deck.value.backgroundColor !== originalDeck.value.backgroundColor ||
+    deck.value.color !== originalDeck.value.color
+  );
+});
+
 const selectColor = (backgroundColor, color) => {
-  newDeck.value.lightColor = backgroundColor;
-  newDeck.value.darkColor = color;
+  deck.value.backgroundColor = backgroundColor;
+  deck.value.color = color;
 };
 
-const createNewDeck = async () => {
+const saveDeck = async () => {
   if (isFormValid.value) {
-    const rawDeck = toRaw(newDeck.value);
-    const id = await decksStore.createDeck(rawDeck);
-    router.push({ name: 'new-card', params: { id } });
+    const rawDeck = toRaw(deck.value);
+    if (isEditMode.value) {
+      await decksStore.updateDeck(rawDeck);
+      router.push({ name: 'decks' });
+    } else {
+      const id = await decksStore.createDeck(rawDeck);
+      router.push({ name: 'new-card', params: { id } });
+      return;
+    }
   }
+};
+
+const deleteDeck = async () => {
+  await decksStore.deleteDeck(deck.value.id);
+  router.push({ name: 'decks' });
+};
+
+const goBack = () => {
+  router.go(-1);
 };
 
 let touchStartX = 0;
@@ -56,34 +87,50 @@ const handleTouchEnd = (e) => {
 
 const handleSwipe = () => {
   const swipeThreshold = 300;
-  if (touchStartX - touchEndX > swipeThreshold) {
-    // Swipe left, do nothing or implement forward functionality if needed
-  } else if (touchEndX - touchStartX > swipeThreshold) {
-    router.go(-1);
+  if (touchEndX - touchStartX > swipeThreshold) {
+    goBack();
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   document.addEventListener('touchstart', handleTouchStart, false);
   document.addEventListener('touchend', handleTouchEnd, false);
-});
+
+  if (isEditMode.value) {
+    const id = parseInt(route.params.id);
+    const fetchedDeck = await decksStore.getDeck(id);
+    if (fetchedDeck) {
+      deck.value = { ...fetchedDeck };
+      originalDeck.value = { ...fetchedDeck };
+    } else {
+      console.error('Deck not found');
+      router.push({ name: 'decks' });
+    }
+  }
+})
 
 onUnmounted(() => {
   document.removeEventListener('touchstart', handleTouchStart, false);
   document.removeEventListener('touchend', handleTouchEnd, false);
-});
+})
+
 </script>
+
 
 <template>
   <main>
-    <form @submit.prevent="createNewDeck">
+    <button class="back-button" @click="goBack">
+      {{ '< slide back' }}
+    </button>
+
+    <form @submit.prevent="saveDeck">
       <label for="deck-name">
         deck name*
       </label>
       <input
         id="deck-name"
         type="text"
-        v-model="newDeck.name"
+        v-model="deck.name"
         placeholder="[epic] [deck] [title]"
         :class="{ 'invalid': !isNameValid && nameLength > 0 }"
       >
@@ -99,7 +146,7 @@ onUnmounted(() => {
       </label>
       <textarea
         id="deck-description"
-        v-model="newDeck.description"
+        v-model="deck.description"
         placeholder="[why] [this] [deck] [rocks]"
         :class="{ 'invalid': !isDescriptionValid && descriptionLength > 0 }"
       />
@@ -125,9 +172,9 @@ onUnmounted(() => {
           :key="option.name"
           class="color-circle"
           @click="selectColor(option.backgroundColor, option.color)"
-          :class="{ 'selected': newDeck.lightColor === option.backgroundColor && newDeck.darkColor === option.color }"
+          :class="{ 'selected': deck.backgroundColor === option.backgroundColor && deck.color === option.color }"
           role="radio"
-          :aria-checked="newDeck.lightColor === option.backgroundColor && newDeck.darkColor === option.color"
+          :aria-checked="deck.backgroundColor === option.backgroundColor && deck.color === option.color"
           :aria-label="`Select ${option.name} color combination`"
           tabindex="0"
         >
@@ -138,11 +185,15 @@ onUnmounted(() => {
 
       <button
         type="submit"
-        :disabled="!isFormValid"
+        :disabled="isEditMode ? (!isFormValid || !hasDeckChanged) : !isFormValid"
       >
-        Create deck >
+        {{ isEditMode ? 'update deck >' : 'create deck >' }}
       </button>
     </form>
+
+    <button v-if="isEditMode" @click="deleteDeck" class="delete-button">
+      Delete deck
+    </button>
   </main>
 </template>
 
@@ -152,5 +203,8 @@ form {
 }
 button[type="submit"] {
   margin-top: 80px;
+}
+.delete-button {
+  margin-top: 20px;
 }
 </style>

@@ -93,12 +93,10 @@ onUnmounted(() => {
   width: 100%;
   list-style-type: none;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
 }
 
 .deck-item {
+  width: 100%;
   cursor: pointer;
   padding: 20px;
   border-radius: var(--border);
