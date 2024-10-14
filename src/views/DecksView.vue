@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { storeToRefs } from 'pinia'
-import('@/views/SlidesView.vue')
 
 const decksStore = useDecksStore()
 const router = useRouter()
@@ -18,7 +17,7 @@ onMounted(() => {
 })
 
 const navigateToDeck = (deckId) => {
-  router.push({ name: 'slides', params: { id: deckId } })
+  router.push({ name: 'deck', params: { id: deckId } })
 }
 
 const navigateToDeckEdit = (deckId) => {

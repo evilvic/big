@@ -1,22 +1,20 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
-  text: { type: String, required: true },
-  backgroundColor: { type: String },
-  color: { type: String },
-  collectionLightColor: { type: String, required: true },
-  collectionDarkColor: { type: String, required: true },
+  text: { type: String },
+  cardBackgroundColor: { type: String },
+  cardColor: { type: String },
+  deckBackgroundColor: { type: String, required: true },
+  deckColor: { type: String, required: true },
+  isNewCardPlaceholder: { type: Boolean, default: false },
 })
 
-const effectiveLightColor = computed(() => props.backgroundColor || props.collectionLightColor)
-const effectiveDarkColor = computed(() => props.color || props.collectionDarkColor)
+const backgroundColor = computed(() => props.cardBackgroundColor || props.deckBackgroundColor)
+const color = computed(() => props.cardColor || props.deckColor)
 
-const backgroundColor = computed(() => effectiveLightColor.value)
-const textColor = computed(() => effectiveDarkColor.value)
-
-const words = ref(props.text.split(' '))
-const containerRef = ref(null)
+const words = ref(props.isNewCardPlaceholder ? [] : props.text.split(' '))
+const cardRef = ref(null)
 
 const groupWordsIntoRows = () => {
   const rows = [];
@@ -52,9 +50,26 @@ const groupWordsIntoRows = () => {
 };
 
 const adjustLayout = () => {
-  if (!containerRef.value) return
+  if (!cardRef.value) return
 
-  const container = containerRef.value
+  if (props.isNewCardPlaceholder) {
+    const container = cardRef.value
+    container.innerHTML = ''
+    
+    const newCardText = document.createElement('span')
+    newCardText.style.textAlign = 'center'
+    newCardText.style.lineHeight = '0.9'
+    newCardText.textContent = '+ new card'
+    newCardText.style.fontSize = '9rem'
+    newCardText.style.fontFamily = 'Barrio, sans-serif'
+    newCardText.style.color = color.value
+    
+    container.appendChild(newCardText)
+    
+    return
+  }
+
+  const container = cardRef.value
   const containerWidth = container.clientWidth
   const containerHeight = container.clientHeight
 
@@ -67,7 +82,7 @@ const adjustLayout = () => {
     span.style.lineHeight = '0.9'
     span.style.whiteSpace = 'nowrap'
     span.style.fontFamily = 'Barrio, sans-serif'
-    span.style.color = textColor
+    span.style.color = color
     span.textContent = row.join(' ')
     container.appendChild(span)
     return span
@@ -123,11 +138,9 @@ onUnmounted(() => {
 
 <template>
   <article 
-    ref="containerRef" 
-    :style="{ 
-      backgroundColor: backgroundColor,
-      color: textColor
-    }"
+    ref="cardRef" 
+    :style="{ backgroundColor, color }"
+    :class="{ 'new-card': isNewCardPlaceholder }"
   ></article>
 </template>
 
@@ -145,5 +158,13 @@ article {
 }
 span {
   color: inherit;
+}
+.plus-symbol {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.new-card-text {
+  font-size: 1.5rem;
 }
 </style>

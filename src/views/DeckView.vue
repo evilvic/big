@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { useCardsStore } from '@/stores/cardsStore'
-import Slider from '@/components/SliderComponent.vue'
+import DeckCarouselComponent from '@/components/DeckCarouselComponent.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -38,32 +38,33 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container">
-    <div v-if="isLoading" class="loading">
-      Loading...
-    </div>
-    <div v-else-if="error" class="error">
-      {{ error }}
-      <button @click="goBackToDecks">Go back to decks</button>
-    </div>
-    <template v-else>
-      <Slider
-        v-if="cards.length > 0"
-        :cards="cards"
-        :collectionLightColor="currentDeck.backgroundColor"
-        :collectionDarkColor="currentDeck.color"
-      />
-      <div v-else class="no-cards">
-        This deck has no cards yet.
+  <main>
+    <div class="container">
+      <div v-if="isLoading" class="loading">
+        Loading...
+      </div>
+      <div v-else-if="error" class="error">
+        {{ error }}
         <button @click="goBackToDecks">Go back to decks</button>
       </div>
-    </template>
-  </div>
+      <template v-else>
+        <DeckCarouselComponent
+          :cards="cards"
+          :deckBackgroundColor="currentDeck.backgroundColor"
+          :deckColor="currentDeck.color"
+          :deckId="currentDeck.id"
+        />
+      </template>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+main {
+  padding: 0;
+}
 .container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -1,26 +1,27 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import Slide from '@/components/SlideComponent.vue'
 import { useRouter } from 'vue-router'
+import CardComponent from '@/components/CardComponent.vue'
 
 const router = useRouter()
 
 const props = defineProps({
   cards: { type: Array, required: true },
-  collectionLightColor: { type: String, required: true },
-  collectionDarkColor: { type: String, required: true },
+  deckBackgroundColor: { type: String, required: true },
+  deckColor: { type: String, required: true },
+  deckId: { type: Number, required: true },
 })
 
 const currentIndex = ref(0)
 const showIndicators = ref(false)
 const touchStart = ref(null)
-const containerRef = ref(null)
+const carouselRef = ref(null)
 const direction = ref('next')
 
 const currentCard = computed(() => props.cards[currentIndex.value])
 
 const goToNext = () => {
-  if (currentIndex.value < props.cards.length - 1) {
+  if (currentIndex.value < props.cards.length) {
     direction.value = 'next'
     currentIndex.value += 1
   }
@@ -33,6 +34,10 @@ const goToPrev = () => {
   } else {
     router.push({ name: 'decks' })
   }
+}
+
+const goToNewCard = () => {
+  router.push({ name: 'new-card', params: { id: props.deckId } })
 }
 
 const handleTouchStart = (event) => {
@@ -62,7 +67,7 @@ const handleTouchEnd = () => {
 }
 
 // TODO: Fix, timer reset on every change
-const showIndicatorsTemporarily = () => {
+const showIndicatorsTemporary = () => {
   showIndicators.value = true
   setTimeout(() => {
     showIndicators.value = false
@@ -70,18 +75,18 @@ const showIndicatorsTemporarily = () => {
 }
 
 onMounted(() => {
-  if (containerRef.value) {
-    containerRef.value.addEventListener('touchstart', handleTouchStart)
-    containerRef.value.addEventListener('touchmove', handleTouchMove)
-    containerRef.value.addEventListener('touchend', handleTouchEnd)
+  if (carouselRef.value) {
+    carouselRef.value.addEventListener('touchstart', handleTouchStart)
+    carouselRef.value.addEventListener('touchmove', handleTouchMove)
+    carouselRef.value.addEventListener('touchend', handleTouchEnd)
   }
 })
 
 onUnmounted(() => {
-  if (containerRef.value) {
-    containerRef.value.removeEventListener('touchstart', handleTouchStart)
-    containerRef.value.removeEventListener('touchmove', handleTouchMove)
-    containerRef.value.removeEventListener('touchend', handleTouchEnd)
+  if (carouselRef.value) {
+    carouselRef.value.removeEventListener('touchstart', handleTouchStart)
+    carouselRef.value.removeEventListener('touchmove', handleTouchMove)
+    carouselRef.value.removeEventListener('touchend', handleTouchEnd)
   }
 })
 
@@ -104,23 +109,39 @@ watch(currentIndex, (newIndex, oldIndex) => {
 </script>
 
 <template>
-  <div class="carousel" ref="containerRef" @click="showIndicatorsTemporarily">
+  <div
+    class="carousel" 
+    ref="carouselRef"
+    @click="showIndicatorsTemporary"
+  >
     <div class="slider-container">
-      <Slide
+      <CardComponent
         v-for="(card, index) in cards"
         :key="index"
         :text="card.text"
         :backgroundColor="card.backgroundColor"
         :color="card.color"
-        :collectionLightColor="collectionLightColor"
-        :collectionDarkColor="collectionDarkColor"
+        :deckBackgroundColor="deckBackgroundColor"
+        :deckColor="deckColor"
         class="slider-item"
         :class="{ 'current': index === currentIndex }"
       />
+      <CardComponent
+        :isNewCardPlaceholder="true"
+        :deckBackgroundColor="deckBackgroundColor"
+        :deckColor="deckColor"
+        class="slider-item new-card"
+        :class="{ 'current': currentIndex === cards.length }"
+        @click="goToNewCard"
+      />
     </div>
-    <div class="indicators" :class="{ 'show': showIndicators }">
+    <div
+      v-if="cards.length > 0"
+      class="indicators"
+      :class="{ 'show': showIndicators }"
+    >
       <div
-        v-for="(card, index) in cards"
+        v-for="(card, index) in [...cards, {}]"
         :key="index"
         class="indicator"
         :class="{ 'active': index === currentIndex }"

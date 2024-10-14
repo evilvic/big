@@ -24,9 +24,9 @@ const router = createRouter({
       component: () => import('@/views/NewCardView.vue'),
     },
     {
-      path: '/slides/:id',
-      name: 'slides',
-      component: () => import('@/views/SlidesView.vue'),
+      path: '/decks/:id',
+      name: 'deck',
+      component: () => import('@/views/DeckView.vue'),
     }
   ]
 })
