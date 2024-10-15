@@ -27,12 +27,18 @@ export class IndexedDBController {
       request.onupgradeneeded = (event) => {
         this.db = event.target.result
         if (!this.db.objectStoreNames.contains('decks')) {
-          this.db.createObjectStore('decks', { keyPath: 'id', autoIncrement: true })
+          const decksStore = this.db.createObjectStore('decks', { keyPath: 'id', autoIncrement: true })
+          decksStore.createIndex('createdAt', 'createdAt', { unique: false })
+          decksStore.createIndex('updatedAt', 'updatedAt', { unique: false })
+
         }
 
         if (!this.db.objectStoreNames.contains('cards')) {
           const cardsStore = this.db.createObjectStore('cards', { keyPath: 'id', autoIncrement: true })
           cardsStore.createIndex('deckId', 'deckId', { unique: false })
+          cardsStore.createIndex('order', 'order', { unique: false })
+          cardsStore.createIndex('createdAt', 'createdAt', { unique: false })
+          cardsStore.createIndex('updatedAt', 'updatedAt', { unique: false })
         }
       }
 

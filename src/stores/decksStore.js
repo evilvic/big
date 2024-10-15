@@ -21,9 +21,14 @@ export const useDecksStore = defineStore('decks', () => {
 
   const createDeck = async (deck) => {
     const { id, ...deckWithoutId } = deck;
-    const plainDeck = JSON.parse(JSON.stringify(deckWithoutId));
-    const newId = await dataController.createDeck(plainDeck)
-    decks.value.push({ ...plainDeck, id: newId });
+    const now = new Date().toISOString()
+    const newDeck = {
+      ...deckWithoutId,
+      createdAt: now,
+      updatedAt: now,
+    }
+    const newId = await dataController.createDeck(newDeck)
+    decks.value.push({ ...newDeck, id: newId });
     return newId
   }
 
@@ -32,8 +37,12 @@ export const useDecksStore = defineStore('decks', () => {
   }
 
   const updateDeck = async (deck) => {
+    deck.updatedAt = new Date().toISOString()
     await dataController.updateDeck(deck)
-    await fetchDecks()
+    const index = decks.value.findIndex(d => d.id === deck.id)
+    if (index !== -1) {
+      decks.value[index] = deck
+    }
   }
 
   const deleteDeck = async (id) => {

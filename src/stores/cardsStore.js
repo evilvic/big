@@ -16,13 +16,20 @@ export const useCardsStore = defineStore('cards', () => {
 
   const createCard = async (card) => {
     const { id, ...cardWithoutId } = card;
-    const plainCard = JSON.parse(JSON.stringify(cardWithoutId));
-    const newId = await dataController.createCard(plainCard)
-    cards.value.push({ ...card, id: newId });
+    const now = new Date().toISOString()
+    const newCard = {
+      ...cardWithoutId,
+      createdAt: now,
+      updatedAt: now,
+      order: cards.value.length
+    }
+    const newId = await dataController.createCard(newCard)
+    cards.value.push({ ...newCard, id: newId });
     return newId
   }
 
   const updateCard = async (card) => {
+    card.updatedAt = new Date().toISOString()
     await dataController.updateCard(card)
     const index = cards.value.findIndex(c => c.id === card.id)
     if (index !== -1) {
@@ -33,6 +40,10 @@ export const useCardsStore = defineStore('cards', () => {
   const deleteCard = async (id) => {
     await dataController.deleteCard(id)
     cards.value = cards.value.filter(card => card.id !== id)
+    cards.value.forEach((card, index) => {
+      card.order = index
+      dataController.updateCard(card)
+    })
   }
 
   const deleteCardsForDeck = async (deckId) => {

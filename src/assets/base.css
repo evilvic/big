@@ -1,4 +1,19 @@
-@import url(https://fonts.bunny.net/css?family=barrio:400|roboto-mono:400);
+
+@font-face {
+  font-family: 'Barrio';
+  src: url('@/assets/fonts/Barrio.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('@/assets/fonts/RobotoMono.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --white: #FDFDFD;
@@ -62,7 +77,7 @@ main {
 }
 
 h1 {
-  font-family: 'Libre Barcode 39 Text', display;
+
   font-weight: 400;
   font-size: 3rem;
   line-height: 1.2;
@@ -78,7 +93,7 @@ h2 {
 }
 
 p {
-  font-family: 'Alice', serif;
+
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 1;
