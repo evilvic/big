@@ -15,6 +15,7 @@ const props = defineProps({
 
 const currentIndex = ref(props.cardIndex || 0)
 const showIndicators = ref(false)
+const indicatorsTimer = ref(null)
 const touchStart = ref(null)
 const carouselRef = ref(null)
 const direction = ref('next')
@@ -45,17 +46,20 @@ const goToNewCard = () => {
 
 const handleTouchStart = (event) => {
   touchStart.value = event.touches[0].clientX
-  showIndicators.value = true
+  showIndicatorsTemporary()
+  clearTimeout(longPressTimer.value)
   isLongPress.value = false
   
-  longPressTimer.value = setTimeout(() => {
-    isLongPress.value = true
-    const currentCard = props.cards[currentIndex.value]
-    router.push({ 
-      name: 'edit-card', 
-      params: { id: props.deckId, cardId: currentCard.id },
-    })
-  }, 500)
+  if (props.cards.length > 0 && currentIndex.value < props.cards.length) {
+    longPressTimer.value = setTimeout(() => {
+      isLongPress.value = true
+      const currentCard = props.cards[currentIndex.value]
+      router.push({ 
+        name: 'edit-card', 
+        params: { id: props.deckId, cardId: currentCard.id },
+      })
+    }, 2000)
+  }
 }
 
 const handleTouchMove = (event) => {
@@ -78,16 +82,18 @@ const handleTouchMove = (event) => {
 const handleTouchEnd = () => {
   touchStart.value = null
   clearTimeout(longPressTimer.value)
-  setTimeout(() => {
-    showIndicators.value = false
-  }, 2000)
 }
 
-// TODO: Fix, timer reset on every change
 const showIndicatorsTemporary = () => {
+  if (indicatorsTimer.value) {
+    clearTimeout(indicatorsTimer.value)
+  }
+
   showIndicators.value = true
-  setTimeout(() => {
+  
+  indicatorsTimer.value = setTimeout(() => {
     showIndicators.value = false
+    indicatorsTimer.value = null
   }, 2000)
 }
 
@@ -104,6 +110,13 @@ onUnmounted(() => {
     carouselRef.value.removeEventListener('touchstart', handleTouchStart)
     carouselRef.value.removeEventListener('touchmove', handleTouchMove)
     carouselRef.value.removeEventListener('touchend', handleTouchEnd)
+
+    if (indicatorsTimer.value) {
+      clearTimeout(indicatorsTimer.value)
+    }
+    if (longPressTimer.value) {
+      clearTimeout(longPressTimer.value)
+    }
   }
 })
 

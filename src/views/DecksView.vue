@@ -10,7 +10,7 @@ const router = useRouter()
 const { decks } = storeToRefs(decksStore)
 
 const touchTimeout = ref(null)
-const longPressDelay = 1000
+const longPressDelay = 2000
 
 onMounted(() => {
   decksStore.fetchDecks()
