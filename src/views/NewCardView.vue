@@ -28,8 +28,12 @@ onMounted(async () => {
 const addCard = async () => {
   if (isTextValid.value) {
     const rawCard = toRaw(newCard.value);
-    await cardsStore.createCard(rawCard);
-    router.push('/');
+    const newCardId = await cardsStore.createCard(rawCard);
+    router.push({ 
+      name: 'deck', 
+      params: { id: newCard.value.deckId },
+      query: { cardId: newCardId }
+    });
   }
 };
 </script>

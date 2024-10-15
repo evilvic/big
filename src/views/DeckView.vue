@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { useCardsStore } from '@/stores/cardsStore'
@@ -13,6 +13,7 @@ const cardsStore = useCardsStore()
 const currentDeck = ref(null)
 const isLoading = ref(true)
 const error = ref(null)
+const cardIndex = ref(0)
 
 const cards = computed(() => cardsStore.cards)
 
@@ -28,6 +29,16 @@ onMounted(async () => {
       throw new Error('Deck not found')
     }
     await cardsStore.fetchCardsByDeckId(deckId)
+
+    if (route.query.cardId) {
+      const index = cards.value.findIndex(card => card.id === parseInt(route.query.cardId))
+      if (index !== -1) {
+        cardIndex.value = index
+      }
+
+      await nextTick()
+      router.replace({ name: 'deck', params: { id: route.params.id } })
+    }
     isLoading.value = false
   } catch (err) {
     console.error('Error loading deck:', err)
@@ -53,6 +64,7 @@ onMounted(async () => {
           :deckBackgroundColor="currentDeck.backgroundColor"
           :deckColor="currentDeck.color"
           :deckId="currentDeck.id"
+          :cardIndex="cardIndex"
         />
       </template>
     </div>

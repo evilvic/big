@@ -10,9 +10,10 @@ const props = defineProps({
   deckBackgroundColor: { type: String, required: true },
   deckColor: { type: String, required: true },
   deckId: { type: Number, required: true },
+  cardIndex: { type: Number },
 })
 
-const currentIndex = ref(0)
+const currentIndex = ref(props.cardIndex || 0)
 const showIndicators = ref(false)
 const touchStart = ref(null)
 const carouselRef = ref(null)
