@@ -140,6 +140,21 @@ export class IndexedDBController {
     });
   }
 
+  getCard(id) {
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction(['cards'], 'readonly');
+      const store = transaction.objectStore('cards');
+      const request = store.get(id);
+
+      request.onerror = () => {
+        reject(request.error)
+      }
+      request.onsuccess = () => {
+        resolve(request.result)
+      }
+    })
+  }
+
   createCard(card) {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');

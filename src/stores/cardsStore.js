@@ -10,10 +10,16 @@ export const useCardsStore = defineStore('cards', () => {
     cards.value = await dataController.getCardsByDeckId(deckId)
   }
 
+  const getCard = async (id) => {
+    return await dataController.getCard(id)
+  }
+
   const createCard = async (card) => {
-    const id = await dataController.createCard(card)
-    cards.value.push({ ...card, id })
-    return id
+    const { id, ...cardWithoutId } = card;
+    const plainCard = JSON.parse(JSON.stringify(cardWithoutId));
+    const newId = await dataController.createCard(plainCard)
+    cards.value.push({ ...card, id: newId });
+    return newId
   }
 
   const updateCard = async (card) => {
@@ -36,6 +42,7 @@ export const useCardsStore = defineStore('cards', () => {
   return {
     cards,
     fetchCardsByDeckId,
+    getCard,
     createCard,
     updateCard,
     deleteCard,
