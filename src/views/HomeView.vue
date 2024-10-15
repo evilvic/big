@@ -4,6 +4,11 @@ import { useRouter, RouterLink } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { storeToRefs } from 'pinia'
 
+import '@/views/DeckView.vue'
+import '@/components/DeckCarouselComponent.vue'
+import '@/components/CardComponent.vue'
+import '@/views/DeckFormView.vue'
+
 const router = useRouter()
 const decksStore = useDecksStore()
 
