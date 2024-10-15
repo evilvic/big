@@ -13,11 +13,6 @@ const colorOptions = [
     backgroundColor: "#8DE8D7",
     color: "#595959"
   },
-  {
-    name: "diet-green-inverted",
-    backgroundColor: "#595959",
-    color: "#8DE8D7"
-  },
 ]
 
 const deck = ref({
