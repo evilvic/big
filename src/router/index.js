@@ -24,6 +24,11 @@ const router = createRouter({
       component: () => import('@/views/CardFormView.vue'),
     },
     {
+      path: '/decks/:id/:cardId/edit',
+      name: 'edit-card',
+      component: () => import('@/views/CardFormView.vue'),
+    },
+    {
       path: '/decks/:id',
       name: 'deck',
       component: () => import('@/views/DeckView.vue'),

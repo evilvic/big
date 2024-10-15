@@ -18,6 +18,8 @@ const showIndicators = ref(false)
 const touchStart = ref(null)
 const carouselRef = ref(null)
 const direction = ref('next')
+const longPressTimer = ref(null)
+const isLongPress = ref(false)
 
 const currentCard = computed(() => props.cards[currentIndex.value])
 
@@ -44,13 +46,26 @@ const goToNewCard = () => {
 const handleTouchStart = (event) => {
   touchStart.value = event.touches[0].clientX
   showIndicators.value = true
+  isLongPress.value = false
+  
+  longPressTimer.value = setTimeout(() => {
+    isLongPress.value = true
+    const currentCard = props.cards[currentIndex.value]
+    router.push({ 
+      name: 'edit-card', 
+      params: { id: props.deckId, cardId: currentCard.id },
+    })
+  }, 500)
 }
 
 const handleTouchMove = (event) => {
   if (!touchStart.value) return
+  
+  clearTimeout(longPressTimer.value)
+  
   const touchEnd = event.touches[0].clientX
   const diff = touchStart.value - touchEnd
-  if (Math.abs(diff) > 50) {
+  if (Math.abs(diff) > 50 && !isLongPress.value) {
     if (diff > 0) {
       goToNext()
     } else {
@@ -62,6 +77,7 @@ const handleTouchMove = (event) => {
 
 const handleTouchEnd = () => {
   touchStart.value = null
+  clearTimeout(longPressTimer.value)
   setTimeout(() => {
     showIndicators.value = false
   }, 2000)
@@ -114,6 +130,9 @@ watch(currentIndex, (newIndex, oldIndex) => {
     class="carousel" 
     ref="carouselRef"
     @click="showIndicatorsTemporary"
+    @touchstart="handleTouchStart"
+    @touchmove="handleTouchMove"
+    @touchend="handleTouchEnd"
   >
     <div class="slider-container">
       <CardComponent

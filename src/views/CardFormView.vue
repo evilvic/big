@@ -18,7 +18,7 @@ const card = ref({
   color: ''
 });
 
-const isEditMode = computed(() => !!route.query.cardId);
+const isEditMode = computed(() => !!route.params.cardId);
 
 const colorOptions = [
   {
@@ -44,7 +44,7 @@ onMounted(async () => {
   card.value.deckId = deckId;
 
   if (isEditMode.value) {
-    const cardId = parseInt(route.query.cardId);
+    const cardId = parseInt(route.params.cardId);
     const fetchedCard = await cardsStore.getCard(cardId);
     if (fetchedCard) {
       card.value = { ...fetchedCard };
