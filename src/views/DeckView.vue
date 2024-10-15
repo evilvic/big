@@ -14,6 +14,7 @@ const currentDeck = ref(null)
 const isLoading = ref(true)
 const error = ref(null)
 const cardIndex = ref(0)
+const carouselRef = ref(null)
 
 const cards = computed(() => cardsStore.cards)
 
@@ -39,6 +40,7 @@ onMounted(async () => {
       await nextTick()
       router.replace({ name: 'deck', params: { id: route.params.id } })
     }
+
     isLoading.value = false
   } catch (err) {
     console.error('Error loading deck:', err)
@@ -60,6 +62,7 @@ onMounted(async () => {
       </div>
       <template v-else>
         <DeckCarouselComponent
+          ref="carouselRef"
           :cards="cards"
           :deckBackgroundColor="currentDeck.backgroundColor"
           :deckColor="currentDeck.color"

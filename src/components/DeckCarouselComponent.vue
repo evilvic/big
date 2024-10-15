@@ -19,6 +19,7 @@ const indicatorsTimer = ref(null)
 const touchStart = ref(null)
 const carouselRef = ref(null)
 const direction = ref('next')
+const lastAction = ref('next')
 const longPressTimer = ref(null)
 const isLongPress = ref(false)
 
@@ -26,6 +27,7 @@ const currentCard = computed(() => props.cards[currentIndex.value])
 
 const goToNext = () => {
   if (currentIndex.value < props.cards.length) {
+    lastAction.value = 'next'
     direction.value = 'next'
     currentIndex.value += 1
   }
@@ -33,6 +35,7 @@ const goToNext = () => {
 
 const goToPrev = () => {
   if (currentIndex.value > 0) {
+    lastAction.value = 'prev'
     direction.value = 'prev'
     currentIndex.value -= 1
   } else {
@@ -120,22 +123,46 @@ onUnmounted(() => {
   }
 })
 
-watch(currentIndex, (newIndex, oldIndex) => {
+watch([currentIndex, () => props.cards.length], ([newIndex, newLength], [oldIndex, oldLength]) => {
   const cards = document.querySelectorAll('.slider-item')
-  if (newIndex > oldIndex) {
+  
+  if (newLength > oldLength) {
+    lastAction.value = 'next'
+  }
+
+  if (lastAction.value === 'next') {
     cards[newIndex].style.transform = 'translate3d(100%, 0, 0)'
     setTimeout(() => {
       cards[newIndex].style.transform = 'translate3d(0, 0, 0)'
-      cards[oldIndex].style.transform = 'translate3d(-30%, 0, 0)'
+      if (oldIndex >= 0 && oldIndex < cards.length) {
+        cards[oldIndex].style.transform = 'translate3d(-30%, 0, 0)'
+      }
     }, 0)
   } else {
     cards[newIndex].style.transform = 'translate3d(-30%, 0, 0)'
     setTimeout(() => {
       cards[newIndex].style.transform = 'translate3d(0, 0, 0)'
-      cards[oldIndex].style.transform = 'translate3d(100%, 0, 0)'
+      if (oldIndex >= 0 && oldIndex < cards.length) {
+        cards[oldIndex].style.transform = 'translate3d(100%, 0, 0)'
+      }
     }, 0)
   }
 })
+
+const setCurrentIndex = (index) => {
+  if (index !== currentIndex.value) {
+    lastAction.value = index > currentIndex.value ? 'next' : 'prev'
+    currentIndex.value = index
+  }
+}
+
+defineExpose({ setCurrentIndex })
+
+watch(() => props.cardIndex, (newIndex) => {
+  if (newIndex !== undefined && newIndex !== null) {
+    setCurrentIndex(newIndex)
+  }
+}, { immediate: true })
 </script>
 
 <template>

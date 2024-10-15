@@ -68,19 +68,16 @@ const saveCard = async () => {
     
     if (isEditMode.value) {
       await cardsStore.updateCard(rawCard);
-      router.push({ 
-        name: 'deck', 
-        params: { id: card.value.deckId },
-        query: { cardId: card.value.id }
-      });
     } else {
       const id = await cardsStore.createCard(rawCard);
-      router.push({ 
-        name: 'deck', 
-        params: { id: card.value.deckId },
-        query: { cardId: id }
-      });
+      card.value.id = id;
     }
+    
+    router.push({ 
+      name: 'deck', 
+      params: { id: card.value.deckId },
+      query: { cardId: card.value.id }
+    });
   }
 };
 
