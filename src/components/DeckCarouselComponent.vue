@@ -80,7 +80,7 @@ const handleTouchMove = (event) => {
     if (diff > 0) {
       nextCard = cards[currentIndex.value + 1]
       if (nextCard) {
-        currentCard.style.transform = 'translate3d(-100%, 0, 0)'
+        currentCard.style.transform = 'translate3d(-30%, 0, 0)'
         nextCard.style.transform = 'translate3d(0, 0, 0)'
       }
       goToNext()
@@ -102,7 +102,7 @@ const resetCardPositions = () => {
     if (index === currentIndex.value) {
       card.style.transform = 'translate3d(0, 0, 0)'
     } else if (index < currentIndex.value) {
-      card.style.transform = 'translate3d(-100%, 0, 0)'
+      card.style.transform = 'translate3d(-30%, 0, 0)'
     } else {
       card.style.transform = 'translate3d(100%, 0, 0)'
     }

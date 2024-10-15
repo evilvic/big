@@ -49,15 +49,15 @@ onMounted(async () => {
     color: deck.value.color
   };
 
-  const existingOptionIndex = colorOptions.value.findIndex(
-    option => option.backgroundColor === deckColorOption.backgroundColor && option.color === deckColorOption.color
+  const existingOptionIndex = colorOptions.findIndex(
+    option => option.backgroundColor === deck.value.backgroundColor && option.color === deck.value.color
   );
 
   if (existingOptionIndex !== -1) {
-    colorOptions.value.splice(existingOptionIndex, 1);
+    colorOptions.splice(existingOptionIndex, 1);
   }
 
-  colorOptions.value.unshift(deckColorOption);
+  colorOptions.unshift(deckColorOption);
 
   if (isEditMode.value) {
     const cardId = parseInt(route.params.cardId);
