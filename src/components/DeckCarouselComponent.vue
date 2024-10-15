@@ -39,7 +39,7 @@ const goToPrev = () => {
     direction.value = 'prev'
     currentIndex.value -= 1
   } else {
-    router.push({ name: 'decks' })
+    router.push({ name: 'home' })
   }
 }
 

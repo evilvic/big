@@ -19,7 +19,7 @@ const carouselRef = ref(null)
 const cards = computed(() => cardsStore.cards)
 
 const goBackToDecks = () => {
-  router.push({ name: 'decks' })
+  router.push({ name: 'home' })
 }
 
 onMounted(async () => {

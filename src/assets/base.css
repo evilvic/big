@@ -103,20 +103,19 @@ p {
 a, button {
   display: block;
   width: 100%;
+  cursor: pointer;
   padding: 16px;
-
   font-family: 'Barrio', sans-serif;
-  font-size: 2rem;
-  line-height: 1.2;
+  font-size: 2.5rem;
+  line-height: 1;
   word-break: break-word;
   text-align: right;
   text-decoration: unset;
   text-wrap: balance;
   color: var(--text);
   background: var(--active-button);
-
   border-radius: var(--border);
-  border: 1px solid var(--active-button);
+  border: 2px solid var(--active-button);
 }
 
 button:disabled {

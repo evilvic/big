@@ -1,15 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// async views
-
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'decks',
-      component: () => import('@/views/DecksView.vue')
+      name: 'home',
+      component: () => import('@/views/HomeView.vue')
     },
     {
       path: '/decks/new',

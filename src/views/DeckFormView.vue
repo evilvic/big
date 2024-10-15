@@ -55,7 +55,7 @@ const saveDeck = async () => {
     const rawDeck = toRaw(deck.value);
     if (isEditMode.value) {
       await decksStore.updateDeck(rawDeck);
-      router.push({ name: 'decks' });
+      router.push({ name: 'home' });
     } else {
       const id = await decksStore.createDeck(rawDeck);
       router.push({ name: 'new-card', params: { id } });
@@ -66,7 +66,7 @@ const saveDeck = async () => {
 
 const deleteDeck = async () => {
   await decksStore.deleteDeck(deck.value.id);
-  router.push({ name: 'decks' });
+  router.push({ name: 'home' });
 };
 
 const goBack = () => {
@@ -104,7 +104,7 @@ onMounted(async () => {
       originalDeck.value = { ...fetchedDeck };
     } else {
       console.error('Deck not found');
-      router.push({ name: 'decks' });
+      router.push({ name: 'home' });
     }
   }
 })
