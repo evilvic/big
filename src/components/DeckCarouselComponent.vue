@@ -73,13 +73,40 @@ const handleTouchMove = (event) => {
   const touchEnd = event.touches[0].clientX
   const diff = touchStart.value - touchEnd
   if (Math.abs(diff) > 50 && !isLongPress.value) {
+    const cards = document.querySelectorAll('.slider-item')
+    const currentCard = cards[currentIndex.value]
+    let nextCard
+
     if (diff > 0) {
+      nextCard = cards[currentIndex.value + 1]
+      if (nextCard) {
+        currentCard.style.transform = 'translate3d(-100%, 0, 0)'
+        nextCard.style.transform = 'translate3d(0, 0, 0)'
+      }
       goToNext()
     } else {
+      nextCard = cards[currentIndex.value - 1]
+      if (nextCard) {
+        currentCard.style.transform = 'translate3d(100%, 0, 0)'
+        nextCard.style.transform = 'translate3d(0, 0, 0)'
+      }
       goToPrev()
     }
     touchStart.value = null
   }
+}
+
+const resetCardPositions = () => {
+  const cards = document.querySelectorAll('.slider-item')
+  cards.forEach((card, index) => {
+    if (index === currentIndex.value) {
+      card.style.transform = 'translate3d(0, 0, 0)'
+    } else if (index < currentIndex.value) {
+      card.style.transform = 'translate3d(-100%, 0, 0)'
+    } else {
+      card.style.transform = 'translate3d(100%, 0, 0)'
+    }
+  })
 }
 
 const handleTouchEnd = () => {
@@ -106,6 +133,7 @@ onMounted(() => {
     carouselRef.value.addEventListener('touchmove', handleTouchMove)
     carouselRef.value.addEventListener('touchend', handleTouchEnd)
   }
+  resetCardPositions()
 })
 
 onUnmounted(() => {
@@ -123,30 +151,8 @@ onUnmounted(() => {
   }
 })
 
-watch([currentIndex, () => props.cards.length], ([newIndex, newLength], [oldIndex, oldLength]) => {
-  const cards = document.querySelectorAll('.slider-item')
-  
-  if (newLength > oldLength) {
-    lastAction.value = 'next'
-  }
-
-  if (lastAction.value === 'next') {
-    cards[newIndex].style.transform = 'translate3d(100%, 0, 0)'
-    setTimeout(() => {
-      cards[newIndex].style.transform = 'translate3d(0, 0, 0)'
-      if (oldIndex >= 0 && oldIndex < cards.length) {
-        cards[oldIndex].style.transform = 'translate3d(-30%, 0, 0)'
-      }
-    }, 0)
-  } else {
-    cards[newIndex].style.transform = 'translate3d(-30%, 0, 0)'
-    setTimeout(() => {
-      cards[newIndex].style.transform = 'translate3d(0, 0, 0)'
-      if (oldIndex >= 0 && oldIndex < cards.length) {
-        cards[oldIndex].style.transform = 'translate3d(100%, 0, 0)'
-      }
-    }, 0)
-  }
+watch(currentIndex, () => {
+  resetCardPositions()
 })
 
 const setCurrentIndex = (index) => {
