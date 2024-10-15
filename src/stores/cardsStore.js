@@ -5,7 +5,6 @@ import { IndexedDBController } from '@/data/indexedDBController'
 export const useCardsStore = defineStore('cards', () => {
   const dataController = IndexedDBController.getInstance()
   const cards = ref([])
-  const isInitialized = ref(false)
 
   const fetchCardsByDeckId = async (deckId) => {
     cards.value = await dataController.getCardsByDeckId(deckId)
@@ -30,11 +29,16 @@ export const useCardsStore = defineStore('cards', () => {
     cards.value = cards.value.filter(card => card.id !== id)
   }
 
+  const deleteCardsForDeck = async (deckId) => {
+    cards.value = cards.value.filter(card => card.deckId !== deckId);
+  }
+
   return {
     cards,
     fetchCardsByDeckId,
     createCard,
     updateCard,
-    deleteCard
+    deleteCard,
+    deleteCardsForDeck,
   }
 })

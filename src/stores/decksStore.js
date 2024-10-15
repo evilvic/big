@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { IndexedDBController } from '@/data/indexedDBController'
+import { useCardsStore } from '@/stores/cardsStore'
 
 export const useDecksStore = defineStore('decks', () => {
   const dataController = IndexedDBController.getInstance()
@@ -36,8 +37,13 @@ export const useDecksStore = defineStore('decks', () => {
   }
 
   const deleteDeck = async (id) => {
+    const cardsStore = useCardsStore()
+
+    await dataController.deleteCardsForDeck(id)
     await dataController.deleteDeck(id)
-    await fetchDecks()
+
+    decks.value = decks.value.filter(deck => deck.id !== id)
+    cardsStore.deleteCardsForDeck(id)
   }
 
   const currentDeckId = ref(null)

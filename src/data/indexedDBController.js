@@ -117,6 +117,29 @@ export class IndexedDBController {
     })
   }
 
+  deleteCardsForDeck(deckId) {
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction(['cards'], 'readwrite');
+      const store = transaction.objectStore('cards');
+      const index = store.index('deckId');
+      const request = index.openCursor(IDBKeyRange.only(deckId));
+
+      request.onerror = () => {
+        reject(request.error);
+      };
+
+      request.onsuccess = (event) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          cursor.delete();
+          cursor.continue();
+        } else {
+          resolve();
+        }
+      };
+    });
+  }
+
   createCard(card) {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');
