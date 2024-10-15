@@ -9,8 +9,8 @@ const router = useRouter()
 
 const { decks } = storeToRefs(decksStore)
 
-const touchTimeout = ref(null)
 const longPressDelay = 2000
+let touchTimer
 
 onMounted(() => {
   decksStore.fetchDecks()
@@ -25,18 +25,13 @@ const navigateToDeckEdit = (deckId) => {
 }
 
 const handleTouchStart = (deckId) => {
-  touchTimeout.value = setTimeout(() => {
-    navigateToDeckEdit(deckId)
-  }, longPressDelay)
+  touchTimer = setTimeout(() => navigateToDeckEdit(deckId), longPressDelay)
 }
 
 const handleTouchEnd = (event, deckId) => {
-  if (touchTimeout.value) {
-    clearTimeout(touchTimeout.value)
-    touchTimeout.value = null
-    if (event.type !== 'click') {
-      navigateToDeck(deckId)
-    }
+  clearTimeout(touchTimer)
+  if (event.type !== 'click') {
+    navigateToDeck(deckId)
   }
 }
 
@@ -46,12 +41,6 @@ const getDeckStyle = (deck) => {
     color: deck.color
   }
 }
-
-onUnmounted(() => {
-  if (touchTimeout.value) {
-    clearTimeout(touchTimeout.value)
-  }
-})
 </script>
 
 <template>

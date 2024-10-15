@@ -36,12 +36,28 @@ const colorOptions = [
 const textLength = computed(() => card.value.text.length);
 const isTextValid = computed(() => textLength.value > 0 && textLength.value <= 64);
 const isColorSelected = computed(() => card.value.backgroundColor !== "" || card.value.color !== "");
-const isFormValid = computed(() => isTextValid.value);
+const isFormValid = computed(() => isTextValid.value && isColorSelected.value);
 
 onMounted(async () => {
   const deckId = parseInt(route.params.id);
   deck.value = await decksStore.getDeck(deckId);
   card.value.deckId = deckId;
+
+  const deckColorOption = {
+    name: "deck-color",
+    backgroundColor: deck.value.backgroundColor,
+    color: deck.value.color
+  };
+
+  const existingOptionIndex = colorOptions.value.findIndex(
+    option => option.backgroundColor === deckColorOption.backgroundColor && option.color === deckColorOption.color
+  );
+
+  if (existingOptionIndex !== -1) {
+    colorOptions.value.splice(existingOptionIndex, 1);
+  }
+
+  colorOptions.value.unshift(deckColorOption);
 
   if (isEditMode.value) {
     const cardId = parseInt(route.params.cardId);
@@ -52,6 +68,9 @@ onMounted(async () => {
       console.error('Card not found');
       router.push({ name: 'deck', params: { id: deckId } });
     }
+  } else {
+    card.value.backgroundColor = deck.value.backgroundColor;
+    card.value.color = deck.value.color;
   }
 
   await cardsStore.fetchCardsByDeckId(deckId);
@@ -115,7 +134,7 @@ const goBack = () => {
       </span>
 
       <label id="color-picker">
-        Card color
+        *Card color
       </label>
       <div
         id="color-picker"
