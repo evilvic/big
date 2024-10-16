@@ -1,11 +1,14 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useDecksStore } from '@/stores/decksStore';
+import { getSafeAreaInsets } from '@/plugins/safeAreaPlugin'
 
-const deckStore = useDecksStore()
 const route = useRoute()
 const transitionName = ref('slide-left')
+
+onMounted(() => {
+  getSafeAreaInsets()
+})
 
 watch(() => route.path, (newPath, oldPath) => {
   const newDepth = newPath.split('/').length
