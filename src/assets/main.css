@@ -54,6 +54,7 @@
 .delete-button {
   background: var(--error);
   color: var(--white);
+  margin-top: 20px;
 }
 
 .back-button {

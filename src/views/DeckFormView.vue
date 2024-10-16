@@ -196,15 +196,3 @@ onUnmounted(() => {
     </button>
   </main>
 </template>
-
-<style scoped>
-form {
-  margin-top: 40px;
-}
-button[type="submit"] {
-  margin-top: 80px;
-}
-.delete-button {
-  margin-top: 20px;
-}
-</style>
