@@ -61,4 +61,5 @@
   background: var(--background);
   border-color: var(--background);
   text-align: left;
+  font-size: 1.5rem;
 }

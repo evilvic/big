@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, toRaw } from 'vue';
+import { ref, computed, onMounted, toRaw, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 import { useCardsStore } from '@/stores/cardsStore';
@@ -8,17 +8,6 @@ const route = useRoute();
 const router = useRouter();
 const decksStore = useDecksStore();
 const cardsStore = useCardsStore();
-
-const deck = ref(null);
-const card = ref({
-  id: null,
-  text: '',
-  deckId: null,
-  backgroundColor: '',
-  color: ''
-});
-
-const isEditMode = computed(() => !!route.params.cardId);
 
 const colorOptions = [
   {
@@ -33,10 +22,32 @@ const colorOptions = [
   },
 ]
 
+const deck = ref(null);
+const card = ref({
+  id: null,
+  text: '',
+  deckId: null,
+  backgroundColor: '',
+  color: ''
+});
+
+const originalCard = ref(null);
+const isEditMode = computed(() => !!route.params.cardId);
+
 const textLength = computed(() => card.value.text.length);
+
 const isTextValid = computed(() => textLength.value > 0 && textLength.value <= 64);
 const isColorSelected = computed(() => card.value.backgroundColor !== "" || card.value.color !== "");
 const isFormValid = computed(() => isTextValid.value && isColorSelected.value);
+
+const hasCardChanged = computed(() => {
+  if (!originalCard.value) return false;
+  return (
+    card.value.text !== originalCard.value.text ||
+    card.value.backgroundColor !== originalCard.value.backgroundColor ||
+    card.value.color !== originalCard.value.color
+  );
+});
 
 onMounted(async () => {
   const deckId = parseInt(route.params.id);
@@ -64,6 +75,7 @@ onMounted(async () => {
     const fetchedCard = await cardsStore.getCard(cardId);
     if (fetchedCard) {
       card.value = { ...fetchedCard };
+      originalCard.value = { ...fetchedCard };
     } else {
       console.error('Card not found');
       router.push({ name: 'deck', params: { id: deckId } });
@@ -106,7 +118,13 @@ const deleteCard = async () => {
 };
 
 const goBack = () => {
-  router.go(-1);
+  const prevRoute = router.options.history.state.back;
+
+  if (prevRoute === '/decks/new') {
+    router.push({ name: 'home' });
+  } else {
+    router.go(-1);
+  }
 };
 </script>
 
@@ -159,7 +177,7 @@ const goBack = () => {
 
       <button
         type="submit"
-        :disabled="!isFormValid"
+        :disabled="isEditMode ? (!isFormValid || !hasCardChanged) : !isFormValid"
       >
         {{ isEditMode ? 'Update Card' : 'Add Card' }}
       </button>

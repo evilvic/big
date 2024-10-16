@@ -24,7 +24,6 @@ const deck = ref({
 });
 
 const originalDeck = ref(null);
-
 const isEditMode = computed(() => !!route.params.id);
 
 const nameLength = computed(() => deck.value.name.length);
