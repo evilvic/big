@@ -6,8 +6,9 @@ import { getSafeAreaInsets } from '@/plugins/safeAreaPlugin'
 const route = useRoute()
 const transitionName = ref('slide-left')
 
-onMounted(() => {
-  getSafeAreaInsets()
+onMounted(async () => {
+  console.log('mounted')
+  await getSafeAreaInsets()
 })
 
 watch(() => route.path, (newPath, oldPath) => {

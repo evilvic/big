@@ -14,7 +14,7 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "SafeAreaPlugin"
     public let jsName = "SafeAreaPlugin"
     public let pluginMethods: [CAPPluginMethod] = [
-        
+        CAPPluginMethod(name: "getInsets", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func getInsets(_ call: CAPPluginCall) {
@@ -34,5 +34,4 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
             ])
         }
     }
-    
 }
