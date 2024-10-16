@@ -151,12 +151,12 @@ onUnmounted(() => {
 
     <form @submit.prevent="saveCard">
       <label for="card-content">
-        *Card content
+        Card content*
       </label>
       <textarea
         id="card-content"
         v-model="card.text"
-        placeholder="Enter card text"
+        placeholder="[super] [inspiring] [quote]"
         :class="{ 'invalid': !isTextValid && textLength > 0 }"
       />
       <span
@@ -167,7 +167,7 @@ onUnmounted(() => {
       </span>
 
       <label id="color-picker">
-        *Card color
+        Card color*
       </label>
       <div
         id="color-picker"
