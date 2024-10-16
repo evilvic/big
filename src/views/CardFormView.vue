@@ -3,24 +3,12 @@ import { ref, computed, onMounted, onUnmounted, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 import { useCardsStore } from '@/stores/cardsStore';
+import { COLOR_OPTIONS } from '@/data/constants';
 
 const route = useRoute();
 const router = useRouter();
 const decksStore = useDecksStore();
 const cardsStore = useCardsStore();
-
-const colorOptions = [
-  {
-    name: "diet-green",
-    backgroundColor: "#8DE8D7",
-    color: "#595959"
-  },
-  {
-    name: "diet-green-inverted",
-    backgroundColor: "#595959",
-    color: "#8DE8D7"
-  },
-]
 
 const deck = ref(null);
 const card = ref({
@@ -63,15 +51,15 @@ onMounted(async () => {
     color: deck.value.color
   };
 
-  const existingOptionIndex = colorOptions.findIndex(
+  const existingOptionIndex = COLOR_OPTIONS.findIndex(
     option => option.backgroundColor === deck.value.backgroundColor && option.color === deck.value.color
   );
 
   if (existingOptionIndex !== -1) {
-    colorOptions.splice(existingOptionIndex, 1);
+    COLOR_OPTIONS.splice(existingOptionIndex, 1);
   }
 
-  colorOptions.unshift(deckColorOption);
+  COLOR_OPTIONS.unshift(deckColorOption);
 
   if (isEditMode.value) {
     const cardId = parseInt(route.params.cardId);
@@ -188,7 +176,7 @@ onUnmounted(() => {
         aria-labelledby="color-picker"
       >
         <div 
-          v-for="option in colorOptions" 
+          v-for="option in COLOR_OPTIONS" 
           :key="option.name"
           class="color-circle"
           @click="selectColor(option.backgroundColor, option.color)"

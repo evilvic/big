@@ -2,18 +2,13 @@
 import { ref, computed, onMounted, onUnmounted, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
+import { COLOR_OPTIONS } from '@/data/constants';
+
+const colorOptions = COLOR_OPTIONS.filter(option => !option.name.includes('inverted'));
 
 const route = useRoute();
 const router = useRouter();
 const decksStore = useDecksStore();
-
-const colorOptions = [
-  {
-    name: "diet-green",
-    backgroundColor: "#8DE8D7",
-    color: "#595959"
-  },
-]
 
 const deck = ref({
   id: null,
