@@ -58,9 +58,9 @@ const adjustLayout = () => {
     
     const newCardText = document.createElement('span')
     newCardText.style.textAlign = 'center'
-    newCardText.style.lineHeight = '0.9'
+    newCardText.style.lineHeight = '1'
     newCardText.textContent = '+ new card'
-    newCardText.style.fontSize = '9rem'
+    newCardText.style.fontSize = '2rem'
     newCardText.style.fontFamily = 'Barrio, sans-serif'
     newCardText.style.color = color.value
     
@@ -158,13 +158,5 @@ article {
 }
 span {
   color: inherit;
-}
-.plus-symbol {
-  font-size: 5rem;
-  margin-bottom: 1rem;
-}
-
-.new-card-text {
-  font-size: 1.5rem;
 }
 </style>

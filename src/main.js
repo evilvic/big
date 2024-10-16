@@ -1,4 +1,4 @@
-import './assets/main.css'
+import '@/assets/styles/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -9,7 +9,7 @@ import { IndexedDBController } from '@/data/indexedDBController'
 
 const initApp = async () => {
   try {
-    const dataController = IndexedDBController.getInstance()
+    const dataController = await IndexedDBController.getInstance()
     await dataController.initializeDB()
 
     const app = createApp(App)

@@ -22,26 +22,26 @@
   --dark-gray: #393939;
   --black: #292929;
 
+  --green: #B6D7A8; 
+  --yellow: #FFED99;
   --red: #F16C7F;
 
-  --exercise-red: #FB4A4B;
-  --decent-yellow: #FFDE6B;
-  --mindfullness-blue: #618DFF;
-  --diet--green: #8DE8D7;
+  --blue: #87CEEB;
+  --purple: #B19CD9;
+  --orange: #FFD8A8;
+  --pink: #FFB6C1;
+  --mint: #8DE8D7;
 
-}
-
-:root {
   --background: var(--black);
   --text: var(--white);
   --active-button: var(--gray);
   --disabled-button: var(--light-gray);
   --input: var(--dark-gray);
   --error: var(--red);
-}
 
-:root {
   --border: 8px;
+  --padding: 16px;
+  --line-width: 2px;
 }
 
 *,
@@ -72,39 +72,15 @@ main {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth;
-  padding: 40px 16px;
+  padding: 40px var(--padding);
   background: var(--background);
-}
-
-h1 {
-
-  font-weight: 400;
-  font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  color: var(--title-clr);
-}
-
-h2 {
-  font-family: 'Barrio', sans-serif;
-  font-weight: 400;
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
-p {
-
-  font-weight: 400;
-  font-size: 1.2rem;
-  line-height: 1;
-  color: var(--dark);
 }
 
 a, button {
   display: block;
   width: 100%;
   cursor: pointer;
-  padding: 16px;
+  padding: var(--padding);
   font-family: 'Barrio', sans-serif;
   font-size: 2.5rem;
   line-height: 1;
@@ -114,12 +90,13 @@ a, button {
   text-wrap: balance;
   color: var(--text);
   background: var(--active-button);
+  border: var(--line-width) solid var(--active-button);
   border-radius: var(--border);
-  border: 2px solid var(--active-button);
 }
 
 button:disabled {
   background: var(--disabled-button);
+  border-color: var(--disabled-button);
   opacity: 0.1;
   cursor: not-allowed;
 }
@@ -154,8 +131,9 @@ textarea {
   color: var(--text);
   background: var(--input);
   border-radius: var(--border);
-  border: 2px solid var(--input);
+  border: var(--line-width) solid var(--input);
   margin-bottom: 8px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 textarea {
@@ -167,5 +145,5 @@ textarea {
 input:focus,
 textarea:focus {
   outline: none;
-  border: 2px solid var(--white);
+  border: var(--line-width) solid var(--white);
 }

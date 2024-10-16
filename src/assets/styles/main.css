@@ -32,6 +32,10 @@
   overflow: hidden;
 }
 
+.color-circle.selected {
+  border: 4px solid var(--white);
+}
+
 .color-half {
   position: absolute;
   width: 50%;
@@ -47,12 +51,9 @@
   right: 0;
 }
 
-.color-circle.selected {
-  border: 4px solid var(--white);
-}
-
 .delete-button {
   background: var(--error);
+  border-color: var(--error);
   color: var(--white);
   margin-top: 20px;
 }
