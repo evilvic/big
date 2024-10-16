@@ -15,33 +15,76 @@ const decksStore = useDecksStore()
 const { decks } = storeToRefs(decksStore)
 
 const LONG_PRESS_DELAY = 500
+const SCROLL_THRESHOLD = 10
+
+const isScrolling = ref(false)
 let touchTimer = ref(null)
+const isComponentMounted = ref(true)
+
+let touchStartX = 0
+let touchStartY = 0
 
 onMounted(() => {
   decksStore.fetchDecks()
 })
 
 onUnmounted(() => {
-  if (touchTimer.value) clearTimeout(touchTimer.value)
+  isComponentMounted.value = false
+  if (touchTimer.value) {
+    clearTimeout(touchTimer.value)
+    touchTimer.value = null
+  }
 })
 
 const navigateToDeck = (deckId) => {
-  router.push({ name: 'deck', params: { id: deckId } })
+  if (isComponentMounted.value) {
+    router.push({ name: 'deck', params: { id: deckId } })
+  }
 }
 
 const navigateToDeckEdit = (deckId) => {
-  router.push({ name: 'edit-deck', params: { id: deckId } })
+  if (isComponentMounted.value) {
+    router.push({ name: 'edit-deck', params: { id: deckId } })
+  }
 }
 
-const handleTouchStart = (deckId) => {
-  touchTimer.value = setTimeout(() => navigateToDeckEdit(deckId), LONG_PRESS_DELAY)
+const handleTouchStart = (event, deckId) => {
+  touchStartX = event.touches[0].clientX
+  touchStartY = event.touches[0].clientY
+  isScrolling.value = false
+  touchTimer.value = setTimeout(() => {
+    if (isComponentMounted.value) {
+      navigateToDeckEdit(deckId)
+    }
+  }, LONG_PRESS_DELAY)
+}
+
+const handleTouchMove = (event) => {
+  if (touchTimer.value) {
+    const touchEndX = event.touches[0].clientX
+    const touchEndY = event.touches[0].clientY
+    const deltaX = Math.abs(touchEndX - touchStartX)
+    const deltaY = Math.abs(touchEndY - touchStartY)
+  
+    if (deltaX > SCROLL_THRESHOLD || deltaY > SCROLL_THRESHOLD) {
+      clearTimeout(touchTimer.value)
+      touchTimer.value = null
+      isScrolling.value = true
+    }
+  }
 }
 
 const handleTouchEnd = (event, deckId) => {
-  if (touchTimer.value) clearTimeout(touchTimer.value)
-  if (event.type !== 'touchcancel') {
+  if (touchTimer.value) {
+    clearTimeout(touchTimer.value)
+    touchTimer.value = null
+  }
+  
+  if (!isScrolling.value && event.type !== 'touchcancel' && isComponentMounted.value) {
     navigateToDeck(deckId)
   }
+  
+  isScrolling.value = false
 }
 
 const getDeckStyle = (deck) => ({
@@ -61,8 +104,8 @@ const getDeckStyle = (deck) => ({
         :key="deck.id"
         role="listitem"
         class="deck-item"
-        @click="navigateToDeck(deck.id)"
-        @touchstart="handleTouchStart(deck.id)"
+        @touchstart="handleTouchStart($event, deck.id)"
+        @touchmove="handleTouchMove($event)"
         @touchend="handleTouchEnd($event, deck.id)"
         @touchcancel="handleTouchEnd($event, deck.id)"
         :style="getDeckStyle(deck)"
