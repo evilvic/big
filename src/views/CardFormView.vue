@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, toRaw, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, toRaw } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDecksStore } from '@/stores/decksStore';
 import { useCardsStore } from '@/stores/cardsStore';
@@ -50,6 +50,9 @@ const hasCardChanged = computed(() => {
 });
 
 onMounted(async () => {
+  document.addEventListener('touchstart', handleTouchStart, false);
+  document.addEventListener('touchend', handleTouchEnd, false);
+
   const deckId = parseInt(route.params.id);
   deck.value = await decksStore.getDeck(deckId);
   card.value.deckId = deckId;
@@ -126,6 +129,30 @@ const goBack = () => {
     router.go(-1);
   }
 };
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+const handleTouchStart = (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+};
+
+const handleTouchEnd = (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+};
+
+const handleSwipe = () => {
+  const swipeThreshold = 300;
+  if (touchEndX - touchStartX > swipeThreshold) {
+    goBack();
+  }
+};
+
+onUnmounted(() => {
+  document.removeEventListener('touchstart', handleTouchStart, false);
+  document.removeEventListener('touchend', handleTouchEnd, false);
+})
 </script>
 
 <template>

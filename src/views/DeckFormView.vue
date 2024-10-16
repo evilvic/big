@@ -112,7 +112,6 @@ onUnmounted(() => {
   document.removeEventListener('touchstart', handleTouchStart, false);
   document.removeEventListener('touchend', handleTouchEnd, false);
 })
-
 </script>
 
 
