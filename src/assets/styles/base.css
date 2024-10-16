@@ -16,6 +16,15 @@
 }
 
 :root {
+  --safe-area-inset-top: 0px;
+  --safe-area-inset-bottom: 0px;
+  --safe-area-inset-left: 0px;
+  --safe-area-inset-right: 0px;
+
+  --base-inset: 40px;
+  --top-inset: calc(var(--safe-area-inset-top) + var(--base-inset));
+  --bottom-inset: calc(var(--safe-area-inset-bottom) + var(--base-inset));
+
   --white: #FDFDFD;
   --light-gray: #595959;
   --gray: #494949;
@@ -72,7 +81,7 @@ main {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth;
-  padding: 40px var(--padding);
+  padding: var(--top-inset) var(--padding) var(--bottom-inset) var(--padding);
   background: var(--background);
 }
 
