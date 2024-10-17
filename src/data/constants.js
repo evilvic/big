@@ -1,3 +1,5 @@
+export const LONG_PRESS_DELAY = 500
+
 export const COLOR_OPTIONS = [
   {
     name: "mint",

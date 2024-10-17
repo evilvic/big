@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useDecksStore } from '@/stores/decksStore'
 import { storeToRefs } from 'pinia'
+import { LONG_PRESS_DELAY } from '@/data/constants';
 
 import '@/views/DeckView.vue'
 import '@/components/DeckCarouselComponent.vue'
@@ -14,7 +15,6 @@ const decksStore = useDecksStore()
 
 const { decks } = storeToRefs(decksStore)
 
-const LONG_PRESS_DELAY = 500
 const SCROLL_THRESHOLD = 10
 
 const isScrolling = ref(false)
@@ -140,5 +140,6 @@ const getDeckStyle = (deck) => ({
   line-height: 1;
   word-break: break-word;
   margin-bottom: 16px;
+  touch-action: none;
 }
 </style>

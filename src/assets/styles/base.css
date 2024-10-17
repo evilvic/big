@@ -59,6 +59,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -143,6 +148,11 @@ textarea {
   border: var(--line-width) solid var(--input);
   margin-bottom: 8px;
   font-family: 'Roboto Mono', monospace;
+
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 textarea {

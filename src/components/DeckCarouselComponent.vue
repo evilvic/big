@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import CardComponent from '@/components/CardComponent.vue'
+import { LONG_PRESS_DELAY } from '@/data/constants';
 
 const router = useRouter()
 
@@ -22,8 +23,6 @@ const direction = ref('next')
 const lastAction = ref('next')
 const longPressTimer = ref(null)
 const isLongPress = ref(false)
-
-const currentCard = computed(() => props.cards[currentIndex.value])
 
 const goToNext = () => {
   if (currentIndex.value < props.cards.length) {
@@ -61,7 +60,7 @@ const handleTouchStart = (event) => {
         name: 'edit-card', 
         params: { id: props.deckId, cardId: currentCard.id },
       })
-    }, 2000)
+    }, LONG_PRESS_DELAY)
   }
 }
 
@@ -124,7 +123,7 @@ const showIndicatorsTemporary = () => {
   indicatorsTimer.value = setTimeout(() => {
     showIndicators.value = false
     indicatorsTimer.value = null
-  }, 2000)
+  }, LONG_PRESS_DELAY)
 }
 
 onMounted(() => {
@@ -222,6 +221,7 @@ watch(() => props.cardIndex, (newIndex) => {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  touch-action: none;
 }
 
 .slider-container {
