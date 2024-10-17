@@ -251,7 +251,7 @@ onBeforeRouteLeave(async () => {
 
 .indicators {
   position: absolute;
-  bottom: 20px;
+  bottom: calc(20px + var(--safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -268,11 +268,12 @@ onBeforeRouteLeave(async () => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background: var(--light-gray);
+  opacity: 0.3;
   margin: 0 5px;
 }
 
 .indicator.active {
-  background-color: white;
+  background-color: var(--white);
 }
 </style>

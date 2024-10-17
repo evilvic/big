@@ -33,6 +33,9 @@ const router = createRouter({
       path: '/decks/:id',
       name: 'deck',
       component: () => import('@/views/DeckView.vue'),
+      meta: {
+        hideUI: true
+      },
       beforeEnter: async (_, __, next) => {
         await hideStatusBar()
         next()

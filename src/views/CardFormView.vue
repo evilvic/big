@@ -146,7 +146,7 @@ onUnmounted(() => {
 <template>
   <main v-if="deck">
     <button class="back-button" @click="goBack">
-      {{ '< slide back' }}
+      {{ '< back' }}
     </button>
 
     <form @submit.prevent="saveCard">

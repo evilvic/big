@@ -113,7 +113,7 @@ onUnmounted(() => {
 <template>
   <main>
     <button class="back-button" @click="goBack">
-      {{ '< slide back' }}
+      {{ '< back' }}
     </button>
 
     <form @submit.prevent="saveDeck">

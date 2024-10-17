@@ -1,4 +1,6 @@
 <script setup>
+import TopBar from '@/components/TopBar.vue'
+import BottomBar from '@/components/BottomBar.vue'
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { setStatusBarStyleDark } from '@/plugins/statusBar'
@@ -33,11 +35,13 @@ watch(() => route.path, (newPath, oldPath) => {
 
 <template>
   <div id="app">
+    <TopBar v-if="!$route.meta.hideUI" />
     <router-view v-slot="{ Component }">
       <transition :name="transitionName" appear>
         <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
+    <BottomBar v-if="!$route.meta.hideUI" />
   </div>
 </template>
 
