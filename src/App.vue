@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { setStatusBarStyleDark } from '@/plugins/statusBar'
 import { getSafeAreaInsets } from '@/plugins/safeAreaPlugin'
 
 const route = useRoute()
@@ -14,6 +15,7 @@ const setSafeAreaInsets = (insets) => {
 }
 
 const initApp = async () => {
+  await setStatusBarStyleDark()
   const safeAreaInsets = await getSafeAreaInsets()
   setSafeAreaInsets(safeAreaInsets)
 }

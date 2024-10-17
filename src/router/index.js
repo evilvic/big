@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { hideStatusBar } from '@/plugins/statusBar'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,10 @@ const router = createRouter({
       path: '/decks/:id',
       name: 'deck',
       component: () => import('@/views/DeckView.vue'),
+      beforeEnter: async (_, __, next) => {
+        await hideStatusBar()
+        next()
+      },
     }
   ]
 })
