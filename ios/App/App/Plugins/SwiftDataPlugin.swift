@@ -17,7 +17,8 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "SwiftDataPlugin"
     public let jsName = "SwiftDataPlugin"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "createDeck", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "createDeck", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getAllDecks", returnType: CAPPluginReturnPromise)
     ]
     
     override public func load() {
@@ -34,7 +35,8 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
     
-    @MainActor @objc func createDeck(_ call: CAPPluginCall) {
+    @MainActor
+    @objc func createDeck(_ call: CAPPluginCall) {
         guard let name = call.getString("name"),
             let backgroundColor = call.getString("backgroundColor"),
             let color = call.getString("color"),
@@ -50,10 +52,9 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
             return
         }
         
-        let newDeck = Deck(name: name, detail: detail, backgroundColor: backgroundColor, color: color, order: order)
-        context.insert(newDeck)
-        
         do {
+            let newDeck = Deck(name: name, detail: detail, backgroundColor: backgroundColor, color: color, order: order)
+            context.insert(newDeck)
             try context.save()
             call.resolve([
                 "id": newDeck.id.uuidString,
@@ -67,5 +68,32 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
             call.reject("Failed to save deck: \(error.localizedDescription)")
         }
         
+    }
+    
+    @MainActor
+    @objc func getAllDecks(_ call: CAPPluginCall) {
+        guard let context = container?.mainContext else {
+            call.reject("Failed to get main context")
+            return
+        }
+        
+        do {
+            let descriptor = FetchDescriptor<Deck>(sortBy: [SortDescriptor(\.order)])
+            let decks = try context.fetch(descriptor)
+            
+            let decksData = decks.map { deck in
+                [
+                    "id": deck.id.uuidString,
+                    "name": deck.name,
+                    "detail": deck.detail ?? "",
+                    "backgroundColor": deck.backgroundColor,
+                    "color": deck.color,
+                    "order": deck.order,
+                ]
+            }
+            call.resolve(["decks": decksData])
+        } catch {
+            call.reject("Failed to fetch decks: \(error.localizedDescription)")
+        }
     }
 }

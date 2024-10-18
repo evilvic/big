@@ -11,4 +11,8 @@ export class SwiftDataController {
   async createDeck(deck) {
     return await SwiftData.createDeck(deck)
   }
+
+  async getAllDecks() {
+    return await SwiftData.getAllDecks()
+  }
 }

@@ -10,22 +10,25 @@ import SwiftData
 
 @Model
 final class Deck {
-    var id: UUID = UUID()
+    @Attribute(.unique) var id: UUID
     var name: String
     var detail: String?
-    var backgroudColor: String
+    var backgroundColor: String
     var color: String
-    var createdAt: Date = Date()
-    var updatedAt: Date = Date()
+    var createdAt: Date
+    var updatedAt: Date
     var order: Int
     
     @Relationship(deleteRule: .cascade) var cards: [Card] = []
     
     init(name: String, detail: String? = nil, backgroundColor: String, color: String, order: Int) {
+        self.id = UUID()
         self.name = name
         self.detail = detail
-        self.backgroudColor = backgroundColor
+        self.backgroundColor = backgroundColor
         self.color = color
         self.order = order
+        self.createdAt = Date()
+        self.updatedAt = Date()
     }
 }
