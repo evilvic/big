@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import CardComponent from '@/components/CardComponent.vue'
 import { LONG_PRESS_DELAY } from '@/data/constants';
+import { isIos } from "@/plugins/device";
 import { showStatusBar } from '@/plugins/statusBar'
 
 const router = useRouter()
@@ -171,7 +172,9 @@ watch(() => props.cardIndex, (newIndex) => {
 }, { immediate: true })
 
 onBeforeRouteLeave(async () => {
-  await showStatusBar()
+  if (await isIos()) {
+    await showStatusBar()
+  }
 })
 </script>
 

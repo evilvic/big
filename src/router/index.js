@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { isIos } from "@/plugins/device";
 import { hideStatusBar } from '@/plugins/statusBar'
 
 const router = createRouter({
@@ -37,7 +38,9 @@ const router = createRouter({
         hideUI: true
       },
       beforeEnter: async (_, __, next) => {
-        await hideStatusBar()
+        if (await isIos()) {
+          await hideStatusBar()
+        }
         next()
       },
     }

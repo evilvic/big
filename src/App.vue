@@ -3,6 +3,7 @@ import TopBar from '@/components/TopBar.vue'
 import BottomBar from '@/components/BottomBar.vue'
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { isIos } from '@/plugins/device'
 import { setStatusBarStyleDark } from '@/plugins/statusBar'
 import { getSafeAreaInsets } from '@/plugins/safeAreaPlugin'
 
@@ -23,7 +24,9 @@ const initApp = async () => {
 }
 
 onMounted(async () => {
-  await initApp()
+  if (await isIos()) {
+    await initApp()
+  }
 })
 
 watch(() => route.path, (newPath, oldPath) => {
