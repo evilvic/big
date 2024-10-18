@@ -1,4 +1,5 @@
 import UIKit
+import SwiftData
 import Capacitor
 
 @UIApplicationMain

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CE7E6A42CC2AE1C008B0F9D /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E6A32CC2AE1B008B0F9D /* Deck.swift */; };
+		1CE7E6A62CC2B6FC008B0F9D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E6A52CC2B6F1008B0F9D /* Card.swift */; };
 		1CFC5E0B2CC01EC5008BAFD7 /* PluginsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC5E082CC01EC5008BAFD7 /* PluginsViewController.swift */; };
 		1CFC5E0C2CC01EC5008BAFD7 /* SafeAreaPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC5E092CC01EC5008BAFD7 /* SafeAreaPlugin.swift */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1CE7E6A32CC2AE1B008B0F9D /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		1CE7E6A52CC2B6F1008B0F9D /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		1CFC5E082CC01EC5008BAFD7 /* PluginsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginsViewController.swift; sourceTree = "<group>"; };
 		1CFC5E092CC01EC5008BAFD7 /* SafeAreaPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaPlugin.swift; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -36,8 +40,8 @@
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		CE959DD1BFC3675BF35FC1FD /* Pods_big.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_big.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E26DF128674B45CA9BE08275 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
-		E26DF128674B45CA9BE08275 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; name = "PrivacyInfo.xcprivacy"; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +56,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1CE7E6A22CC2AAB7008B0F9D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1CE7E6A52CC2B6F1008B0F9D /* Card.swift */,
+				1CE7E6A32CC2AE1B008B0F9D /* Deck.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		1CFC5E0A2CC01EC5008BAFD7 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,7 +89,7 @@
 				504EC3051FED79650016851F /* Products */,
 				7F8756D8B27F46E3366F6CEA /* Pods */,
 				27E2DDA53C4D2A4D1A88CE4A /* Frameworks */,
-				E26DF128674B45CA9BE08275 /* Resources */,
+				E26DF128674B45CA9BE08275 /* PrivacyInfo.xcprivacy */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,6 +104,7 @@
 		504EC3061FED79650016851F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				1CE7E6A22CC2AAB7008B0F9D /* Models */,
 				1CFC5E0A2CC01EC5008BAFD7 /* Plugins */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
@@ -113,15 +127,6 @@
 				42210FB81660FAE6963270E8 /* Pods-big.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		0AD23BDE855E46A884A0BD5E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E26DF128674B45CA9BE08275 /* PrivacyInfo.xcprivacy */,
-			);
-			name = Resources;
-			path = undefined;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,7 +243,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CE7E6A42CC2AE1C008B0F9D /* Deck.swift in Sources */,
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				1CE7E6A62CC2B6FC008B0F9D /* Card.swift in Sources */,
 				1CFC5E0B2CC01EC5008BAFD7 /* PluginsViewController.swift in Sources */,
 				1CFC5E0C2CC01EC5008BAFD7 /* SafeAreaPlugin.swift in Sources */,
 			);
@@ -384,7 +391,7 @@
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = big;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
@@ -407,7 +414,7 @@
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = big;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = monster.vic.big;

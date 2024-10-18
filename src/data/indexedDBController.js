@@ -28,6 +28,7 @@ export class IndexedDBController {
         this.db = event.target.result
         if (!this.db.objectStoreNames.contains('decks')) {
           const decksStore = this.db.createObjectStore('decks', { keyPath: 'id', autoIncrement: true })
+          decksStore.createIndex('order', 'order', { unique: false })
           decksStore.createIndex('createdAt', 'createdAt', { unique: false })
           decksStore.createIndex('updatedAt', 'updatedAt', { unique: false })
 

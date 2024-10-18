@@ -19,6 +19,10 @@ export const useDecksStore = defineStore('decks', () => {
     decks.value = await dataController.getAllDecks()
   }
 
+  const getDeck = async (id) => {
+    return await dataController.getDeck(id)
+  }
+
   const createDeck = async (deck) => {
     const { id, ...deckWithoutId } = deck;
     const now = new Date().toISOString()
@@ -26,14 +30,11 @@ export const useDecksStore = defineStore('decks', () => {
       ...deckWithoutId,
       createdAt: now,
       updatedAt: now,
+      order: decks.value.length
     }
     const newId = await dataController.createDeck(newDeck)
     decks.value.push({ ...newDeck, id: newId });
     return newId
-  }
-
-  const getDeck = async (id) => {
-    return await dataController.getDeck(id)
   }
 
   const updateDeck = async (deck) => {
@@ -47,11 +48,13 @@ export const useDecksStore = defineStore('decks', () => {
 
   const deleteDeck = async (id) => {
     const cardsStore = useCardsStore()
-
-    await dataController.deleteCardsForDeck(id)
     await dataController.deleteDeck(id)
 
     decks.value = decks.value.filter(deck => deck.id !== id)
+    decks.value.forEach((deck, index) => {
+      deck.order = index
+      dataController.updateDeck(deck)
+    });
     cardsStore.deleteCardsForDeck(id)
   }
 
