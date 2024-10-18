@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1CE7E6A42CC2AE1C008B0F9D /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E6A32CC2AE1B008B0F9D /* Deck.swift */; };
 		1CE7E6A62CC2B6FC008B0F9D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E6A52CC2B6F1008B0F9D /* Card.swift */; };
+		1CE7E6A82CC2CA63008B0F9D /* SwiftDataPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7E6A72CC2CA63008B0F9D /* SwiftDataPlugin.swift */; };
 		1CFC5E0B2CC01EC5008BAFD7 /* PluginsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC5E082CC01EC5008BAFD7 /* PluginsViewController.swift */; };
 		1CFC5E0C2CC01EC5008BAFD7 /* SafeAreaPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC5E092CC01EC5008BAFD7 /* SafeAreaPlugin.swift */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		1CE7E6A32CC2AE1B008B0F9D /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		1CE7E6A52CC2B6F1008B0F9D /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		1CE7E6A72CC2CA63008B0F9D /* SwiftDataPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataPlugin.swift; sourceTree = "<group>"; };
 		1CFC5E082CC01EC5008BAFD7 /* PluginsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginsViewController.swift; sourceTree = "<group>"; };
 		1CFC5E092CC01EC5008BAFD7 /* SafeAreaPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeAreaPlugin.swift; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			children = (
 				1CFC5E082CC01EC5008BAFD7 /* PluginsViewController.swift */,
 				1CFC5E092CC01EC5008BAFD7 /* SafeAreaPlugin.swift */,
+				1CE7E6A72CC2CA63008B0F9D /* SwiftDataPlugin.swift */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CE7E6A82CC2CA63008B0F9D /* SwiftDataPlugin.swift in Sources */,
 				1CE7E6A42CC2AE1C008B0F9D /* Deck.swift in Sources */,
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				1CE7E6A62CC2B6FC008B0F9D /* Card.swift in Sources */,

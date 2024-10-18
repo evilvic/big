@@ -17,5 +17,6 @@ class PluginsViewController: CAPBridgeViewController {
     
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(SafeAreaPlugin())
+        bridge?.registerPluginInstance(SwiftDataPlugin())
     }
 }

@@ -18,7 +18,7 @@ final class Card {
     var updatedAt: Date = Date()
     var order: Int
     
-    @Relationship var deck: Deck
+    @Relationship(inverse: \Deck.cards) var deck: Deck
     
     init(content: String, backgroundColor: String, color: String, order: Int, deck: Deck) {
         self.content = content

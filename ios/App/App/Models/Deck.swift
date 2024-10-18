@@ -19,7 +19,7 @@ final class Deck {
     var updatedAt: Date = Date()
     var order: Int
     
-    @Relationship var cards: [Card] = []
+    @Relationship(deleteRule: .cascade) var cards: [Card] = []
     
     init(name: String, detail: String? = nil, backgroundColor: String, color: String, order: Int) {
         self.name = name
