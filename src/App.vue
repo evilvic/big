@@ -1,13 +1,20 @@
 <script setup>
 import TopBar from '@/components/TopBar.vue'
 import BottomBar from '@/components/BottomBar.vue'
+
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+
+import { useDecksStore } from '@/stores/decksStore'
+import { useCardsStore } from '@/stores/cardsStore'
+
 import { isIos } from '@/plugins/device'
 import { setStatusBarStyleDark } from '@/plugins/statusBar'
 import { getSafeAreaInsets } from '@/plugins/safeAreaPlugin'
 
 const route = useRoute()
+const decksStore = useDecksStore()
+const cardsStore = useCardsStore()
 const transitionName = ref('slide-left')
 
 const setSafeAreaInsets = (insets) => {
@@ -24,6 +31,8 @@ const initApp = async () => {
 }
 
 onMounted(async () => {
+  await decksStore.initializeStore()
+  await cardsStore.initializeStore()
   if (await isIos()) {
     await initApp()
   }

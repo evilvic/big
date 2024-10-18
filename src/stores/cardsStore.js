@@ -1,17 +1,21 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { IndexedDBController } from '@/data/indexedDBController'
+import { ref, reactive } from 'vue'
+import { DataControllerFactory } from '@/data/dataControllerFactory'
 
 export const useCardsStore = defineStore('cards', () => {
-  const dataController = IndexedDBController.getInstance()
+  const dataController = reactive({})
   const cards = ref([])
 
+  const initializeStore = async () => {
+    dataController.value = await DataControllerFactory.getInstance().getController()
+  }
+
   const fetchCardsByDeckId = async (deckId) => {
-    cards.value = await dataController.getCardsByDeckId(deckId)
+    cards.value = await dataController.value.getCardsByDeckId(deckId)
   }
 
   const getCard = async (id) => {
-    return await dataController.getCard(id)
+    return await dataController.value.getCard(id)
   }
 
   const createCard = async (card) => {
@@ -23,14 +27,14 @@ export const useCardsStore = defineStore('cards', () => {
       updatedAt: now,
       order: cards.value.length
     }
-    const newId = await dataController.createCard(newCard)
+    const newId = await dataController.value.createCard(newCard)
     cards.value.push({ ...newCard, id: newId });
     return newId
   }
 
   const updateCard = async (card) => {
     card.updatedAt = new Date().toISOString()
-    await dataController.updateCard(card)
+    await dataController.value.updateCard(card)
     const index = cards.value.findIndex(c => c.id === card.id)
     if (index !== -1) {
       cards.value[index] = card
@@ -38,11 +42,11 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   const deleteCard = async (id) => {
-    await dataController.deleteCard(id)
+    await dataController.value.deleteCard(id)
     cards.value = cards.value.filter(card => card.id !== id)
     cards.value.forEach((card, index) => {
       card.order = index
-      dataController.updateCard(card)
+      dataController.value.updateCard(card)
     })
   }
 
@@ -52,6 +56,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   return {
     cards,
+    initializeStore,
     fetchCardsByDeckId,
     getCard,
     createCard,

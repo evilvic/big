@@ -5,22 +5,15 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import { IndexedDBController } from '@/data/indexedDBController'
 
-const initApp = async () => {
-  try {
-    const dataController = await IndexedDBController.getInstance()
-    await dataController.initializeDB()
+try {
+  const app = createApp(App)
 
-    const app = createApp(App)
+  app.use(createPinia())
+  app.use(router)
 
-    app.use(createPinia())
-    app.use(router)
-
-    app.mount('#app')
-  } catch (error) {
-    console.error(error)
-  }
+  app.mount('#app')
+} catch (error) {
+  console.error(error)
 }
 
-initApp()

@@ -31,6 +31,7 @@ export class DataControllerFactory {
         break
     }
 
+    await this.currentController.initializeDB()
     return this.currentController   
   }
 }

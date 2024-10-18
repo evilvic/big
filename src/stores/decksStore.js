@@ -1,26 +1,22 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { IndexedDBController } from '@/data/indexedDBController'
+import { ref, computed, reactive } from 'vue'
+import { DataControllerFactory } from '@/data/dataControllerFactory'
 import { useCardsStore } from '@/stores/cardsStore'
 
 export const useDecksStore = defineStore('decks', () => {
-  const dataController = IndexedDBController.getInstance()
+  const dataController = reactive({})
   const decks = ref([])
-  const isInitialized = ref(false)
 
   const initializeStore = async () => {
-    if (!isInitialized.value) {
-      await fetchDecks()
-      isInitialized.value = true
-    }
+    dataController.value = await DataControllerFactory.getInstance().getController()
   }
 
   const fetchDecks = async () => {
-    decks.value = await dataController.getAllDecks()
+    decks.value = await dataController.value.getAllDecks()
   }
 
   const getDeck = async (id) => {
-    return await dataController.getDeck(id)
+    return await dataController.value.getDeck(id)
   }
 
   const createDeck = async (deck) => {
@@ -32,14 +28,14 @@ export const useDecksStore = defineStore('decks', () => {
       updatedAt: now,
       order: decks.value.length
     }
-    const newId = await dataController.createDeck(newDeck)
+    const newId = await dataController.value.createDeck(newDeck)
     decks.value.push({ ...newDeck, id: newId });
     return newId
   }
 
   const updateDeck = async (deck) => {
     deck.updatedAt = new Date().toISOString()
-    await dataController.updateDeck(deck)
+    await dataController.value.updateDeck(deck)
     const index = decks.value.findIndex(d => d.id === deck.id)
     if (index !== -1) {
       decks.value[index] = deck
@@ -48,12 +44,12 @@ export const useDecksStore = defineStore('decks', () => {
 
   const deleteDeck = async (id) => {
     const cardsStore = useCardsStore()
-    await dataController.deleteDeck(id)
+    await dataController.value.deleteDeck(id)
 
     decks.value = decks.value.filter(deck => deck.id !== id)
     decks.value.forEach((deck, index) => {
       deck.order = index
-      dataController.updateDeck(deck)
+      dataController.value.updateDeck(deck)
     });
     cardsStore.deleteCardsForDeck(id)
   }
