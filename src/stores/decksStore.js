@@ -12,6 +12,7 @@ export const useDecksStore = defineStore('decks', () => {
   }
 
   const fetchDecks = async () => {
+    await initializeStore()
     decks.value = await dataController.value.getAllDecks()
   }
 

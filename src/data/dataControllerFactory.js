@@ -5,6 +5,7 @@ import { SwiftDataController } from '@/plugins/swiftData'
 export class DataControllerFactory {
   static instance = null;
   currentController = null
+  initializing = false
 
   constructor() {}
 
@@ -16,10 +17,22 @@ export class DataControllerFactory {
   }
 
   async getController() {
-    if (this.currentContreller) {
+    if (this.initializing) {
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+          if (this.currentController) {
+            clearInterval(interval)
+            resolve(this.currentController)
+          }
+        }, 100)
+      })
+    }
+
+    if (this.currentController) {
       return this.currentController
     }
 
+    this.initializing = true
     const { platform } = await getDeviceInfo()
 
     switch (platform) {
@@ -32,6 +45,7 @@ export class DataControllerFactory {
     }
 
     await this.currentController.initializeDB()
+    this.initializing = false
     return this.currentController   
   }
 }

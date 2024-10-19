@@ -5,14 +5,16 @@ const SwiftData = registerPlugin('SwiftDataPlugin')
 export class SwiftDataController {
 
   async initializeDB() {
-    return Promise.resolve()
+    return await SwiftData.initializeDB()
   }
 
   async createDeck(deck) {
-    return await SwiftData.createDeck(deck)
+    const { id } = await SwiftData.createDeck(deck)
+    return id
   }
 
   async getAllDecks() {
-    return await SwiftData.getAllDecks()
+    const { decks } = await SwiftData.getAllDecks()
+    return decks
   }
 }

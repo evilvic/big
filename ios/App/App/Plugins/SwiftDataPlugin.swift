@@ -17,11 +17,13 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "SwiftDataPlugin"
     public let jsName = "SwiftDataPlugin"
     public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "initializeDB", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "createDeck", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getAllDecks", returnType: CAPPluginReturnPromise)
     ]
     
-    override public func load() {
+    @MainActor
+    @objc func initializeDB(_ call: CAPPluginCall) {
         do {
             let schema = Schema([
                 Deck.self,
@@ -30,8 +32,9 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
             
             let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             container = try ModelContainer(for: schema, configurations: [configuration])
+            call.resolve([ "status": "success"])
         } catch {
-            print("Failed to load model container: \(error)")
+            call.reject("Failed to load model container \(error.localizedDescription)")
         }
     }
     
