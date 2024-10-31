@@ -19,7 +19,9 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "initializeDB", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "createDeck", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "getAllDecks", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "getAllDecks", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getDeck", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "updateDeck", returnType: CAPPluginReturnPromise),
     ]
     
     @MainActor
@@ -97,6 +99,74 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
             call.resolve(["decks": decksData])
         } catch {
             call.reject("Failed to fetch decks: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func getDeck(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Deck>(predicate: #Predicate<Deck> { deck in deck.id == id})
+                
+            if let deck = try context.fetch(descriptor).first {
+                call.resolve([
+                    "id": deck.id.uuidString,
+                    "name": deck.name,
+                    "detail": deck.detail ?? "",
+                    "backgroundColor": deck.backgroundColor,
+                    "color": deck.color,
+                    "order": deck.order
+                ])
+            } else {
+                call.reject("Deck not found")
+            }
+        } catch {
+            call.reject("Failed to fetch deck: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func updateDeck(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Deck>(predicate: #Predicate<Deck> { deck in deck.id == id})
+            
+            guard let deck = try context.fetch(descriptor).first else {
+                call.reject("Deck not found")
+                return
+            }
+            
+            if let name = call.getString("name") { deck.name = name }
+            if let detail = call.getString("detail") { deck.detail = detail }
+            if let backgroundColor = call.getString("backgroundColor") { deck.backgroundColor = backgroundColor }
+            if let color = call.getString("color") { deck.color = color }
+            if let order = call.getInt("order") { deck.order = order }
+            deck.updatedAt = Date()
+            
+            try context.save()
+            
+            call.resolve([
+                "id": deck.id.uuidString,
+                "name": deck.name,
+                "detail": deck.detail ?? "",
+                "backgroundColor": deck.backgroundColor,
+                "color": deck.color,
+                "order": deck.order
+            ])
+        } catch {
+            call.reject("Failed to update deck: \(error.localizedDescription)")
         }
     }
 }
