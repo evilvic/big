@@ -17,4 +17,12 @@ export class SwiftDataController {
     const { decks } = await SwiftData.getAllDecks()
     return decks
   }
+
+  async getDeck(id) {
+    return await SwiftData.getDeck({ id })
+  }
+
+  async updateDeck(deck) {
+    return await SwiftData.updateDeck(deck)
+  }
 }

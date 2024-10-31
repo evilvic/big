@@ -1,6 +1,6 @@
 import { getDeviceInfo } from '@/plugins/device';
 import { IndexedDBController } from '@/data/indexedDBController'
-import { SwiftDataController } from '@/plugins/swiftData'
+import { SwiftDataController } from '@/plugins/swiftDataPlugin'
 
 export class DataControllerFactory {
   static instance = null;
