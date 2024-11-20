@@ -193,8 +193,12 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
                 return
             }
             
+            deck.cards.removeAll()
+            try context.save()
+            
             context.delete(deck)
             try context.save()
+            
             call.resolve()
         } catch {
             call.reject("Failed to delete deck: \(error.localizedDescription)")

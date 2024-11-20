@@ -18,7 +18,7 @@ final class Card {
     var updatedAt: Date
     var order: Int
     
-    @Relationship(inverse: \Deck.cards) var deck: Deck
+    @Relationship(deleteRule: .cascade) var deck: Deck
     
     init(content: String, backgroundColor: String, color: String, order: Int, deck: Deck) {
         self.id = UUID()

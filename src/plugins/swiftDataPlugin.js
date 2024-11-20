@@ -40,7 +40,8 @@ export class SwiftDataController {
   }
 
   async getCardsByDeckId(deckId) {
-    return await SwiftData.getCardsByDeckId({ deckId })
+    const { cards } = await SwiftData.getCardsByDeckId({ deckId })
+    return cards
   }
 
   async updateCard(card) {
