@@ -80,6 +80,7 @@ export class IndexedDBController {
   }
 
   getDeck(id) {
+    id = parseInt(id)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['decks'], 'readonly');
       const store = transaction.objectStore('decks');
@@ -110,6 +111,7 @@ export class IndexedDBController {
   }
 
   deleteDeck(id) {
+    id = parseInt(id)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['decks'], 'readwrite');
       const store = transaction.objectStore('decks');
@@ -125,6 +127,7 @@ export class IndexedDBController {
   }
 
   deleteCardsForDeck(deckId) {
+    deckId = parseInt(deckId)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');
       const store = transaction.objectStore('cards');
@@ -148,6 +151,7 @@ export class IndexedDBController {
   }
 
   getCard(id) {
+    id = parseInt(id)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readonly');
       const store = transaction.objectStore('cards');
@@ -163,6 +167,7 @@ export class IndexedDBController {
   }
 
   createCard(card) {
+    card.deckId = parseInt(card.deckId)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');
       const store = transaction.objectStore('cards');
@@ -178,6 +183,7 @@ export class IndexedDBController {
   }
 
   getCardsByDeckId(deckId) {
+    deckId = parseInt(deckId)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readonly');
       const store = transaction.objectStore('cards');
@@ -194,6 +200,7 @@ export class IndexedDBController {
   }
 
   updateCard(card) {
+    card.deckId = parseInt(card.deckId)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');
       const store = transaction.objectStore('cards');
@@ -209,6 +216,7 @@ export class IndexedDBController {
   }
 
   deleteCard(id) {
+    id = parseInt(id)
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(['cards'], 'readwrite');
       const store = transaction.objectStore('cards');
