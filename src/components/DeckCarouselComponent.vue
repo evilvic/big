@@ -191,7 +191,7 @@ onBeforeRouteLeave(async () => {
       <CardComponent
         v-for="(card, index) in cards"
         :key="index"
-        :text="card.text"
+        :text="card.content"
         :cardBackgroundColor="card.backgroundColor"
         :cardColor="card.color"
         :deckBackgroundColor="deckBackgroundColor"

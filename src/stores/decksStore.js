@@ -62,7 +62,7 @@ export const useDecksStore = defineStore('decks', () => {
   )
 
   function setCurrentDeck(id) {
-    currentDeckId.value = parseInt(id)
+    currentDeckId.value = id
   }
 
   return {

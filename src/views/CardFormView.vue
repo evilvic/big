@@ -13,7 +13,7 @@ const cardsStore = useCardsStore();
 const deck = ref(null);
 const card = ref({
   id: null,
-  text: '',
+  content: '',
   deckId: null,
   backgroundColor: '',
   color: ''
@@ -22,16 +22,16 @@ const card = ref({
 const originalCard = ref(null);
 const isEditMode = computed(() => !!route.params.cardId);
 
-const textLength = computed(() => card.value.text.length);
+const contentLength = computed(() => card.value.content.length);
 
-const isTextValid = computed(() => textLength.value > 0 && textLength.value <= 64);
+const isContentValid = computed(() => contentLength.value > 0 && contentLength.value <= 64);
 const isColorSelected = computed(() => card.value.backgroundColor !== "" || card.value.color !== "");
-const isFormValid = computed(() => isTextValid.value && isColorSelected.value);
+const isFormValid = computed(() => isContentValid.value && isColorSelected.value);
 
 const hasCardChanged = computed(() => {
   if (!originalCard.value) return false;
   return (
-    card.value.text !== originalCard.value.text ||
+    card.value.content !== originalCard.value.content ||
     card.value.backgroundColor !== originalCard.value.backgroundColor ||
     card.value.color !== originalCard.value.color
   );
@@ -41,7 +41,7 @@ onMounted(async () => {
   document.addEventListener('touchstart', handleTouchStart, false);
   document.addEventListener('touchend', handleTouchEnd, false);
 
-  const deckId = parseInt(route.params.id);
+  const deckId = route.params.id;
   deck.value = await decksStore.getDeck(deckId);
   card.value.deckId = deckId;
 
@@ -62,7 +62,7 @@ onMounted(async () => {
   COLOR_OPTIONS.unshift(deckColorOption);
 
   if (isEditMode.value) {
-    const cardId = parseInt(route.params.cardId);
+    const cardId = route.params.cardId;
     const fetchedCard = await cardsStore.getCard(cardId);
     if (fetchedCard) {
       card.value = { ...fetchedCard };
@@ -87,6 +87,15 @@ const selectColor = (backgroundColor, color) => {
 const saveCard = async () => {
   if (isFormValid.value) {
     const rawCard = toRaw(card.value);
+
+    // Debug log to see what's being sent
+    console.log('Sending card data:', {
+      content: rawCard.content,          // This should map to 'content' in Swift
+      backgroundColor: rawCard.backgroundColor,
+      color: rawCard.color,
+      deckId: rawCard.deckId,
+      // order will be added by the store
+    });
     
     if (isEditMode.value) {
       await cardsStore.updateCard(rawCard);
@@ -155,15 +164,15 @@ onUnmounted(() => {
       </label>
       <textarea
         id="card-content"
-        v-model="card.text"
+        v-model="card.content"
         placeholder="[super] [inspiring] [quote]"
-        :class="{ 'invalid': !isTextValid && textLength > 0 }"
+        :class="{ 'invalid': !isContentValid && contentLength > 0 }"
       />
       <span
         class="chars-limit"
-        :class="{ 'error': !isTextValid && textLength > 0 }"
+        :class="{ 'error': !isContentValid && contentLength > 0 }"
       >
-        {{ textLength }}/64 chars
+        {{ contentLength }}/64 chars
       </span>
 
       <label id="color-picker">

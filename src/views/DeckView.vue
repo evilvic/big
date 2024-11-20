@@ -24,7 +24,7 @@ const goBackToDecks = () => {
 
 onMounted(async () => {
   try {
-    const deckId = parseInt(route.params.id)
+    const deckId = route.params.id
     currentDeck.value = await decksStore.getDeck(deckId)
     if (!currentDeck.value) {
       throw new Error('Deck not found')
@@ -32,7 +32,7 @@ onMounted(async () => {
     await cardsStore.fetchCardsByDeckId(deckId)
 
     if (route.query.cardId) {
-      const index = cards.value.findIndex(card => card.id === parseInt(route.query.cardId))
+      const index = cards.value.findIndex(card => card.id === route.query.cardId)
       if (index !== -1) {
         cardIndex.value = index
       }

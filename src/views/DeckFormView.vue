@@ -13,7 +13,7 @@ const decksStore = useDecksStore();
 const deck = ref({
   id: null,
   name: "",
-  description: "",
+  detail: "",
   backgroundColor: "",
   color: ""
 });
@@ -22,18 +22,18 @@ const originalDeck = ref(null);
 const isEditMode = computed(() => !!route.params.id);
 
 const nameLength = computed(() => deck.value.name.length);
-const descriptionLength = computed(() => deck.value.description.length);
+const detailLength = computed(() => deck.value.detail.length);
 
 const isNameValid = computed(() => nameLength.value > 0 && nameLength.value <= 24);
-const isDescriptionValid = computed(() => descriptionLength.value <= 64);
+const isDetailValid = computed(() => detailLength.value <= 64);
 const isColorSelected = computed(() => deck.value.backgroundColor !== "");
-const isFormValid = computed(() => isNameValid.value && isDescriptionValid.value && isColorSelected.value);
+const isFormValid = computed(() => isNameValid.value && isDetailValid.value && isColorSelected.value);
 
 const hasDeckChanged = computed(() => {
   if (!originalDeck.value) return false;
   return (
     deck.value.name !== originalDeck.value.name ||
-    deck.value.description !== originalDeck.value.description ||
+    deck.value.detail !== originalDeck.value.detail ||
     deck.value.backgroundColor !== originalDeck.value.backgroundColor ||
     deck.value.color !== originalDeck.value.color
   );
@@ -91,7 +91,7 @@ onMounted(async () => {
   document.addEventListener('touchend', handleTouchEnd, false);
 
   if (isEditMode.value) {
-    const id = parseInt(route.params.id);
+    const id = route.params.id;
     const fetchedDeck = await decksStore.getDeck(id);
     if (fetchedDeck) {
       deck.value = { ...fetchedDeck };
@@ -134,20 +134,20 @@ onUnmounted(() => {
         {{ nameLength }}/24 chars
       </span>
 
-      <label for="deck-description">
-        deck description
+      <label for="deck-detail">
+        deck detail
       </label>
       <textarea
-        id="deck-description"
-        v-model="deck.description"
+        id="deck-detail"
+        v-model="deck.detail"
         placeholder="[why] [this] [deck] [rocks]"
-        :class="{ 'invalid': !isDescriptionValid && descriptionLength > 0 }"
+        :class="{ 'invalid': !isDetailValid && detailLength > 0 }"
       />
       <span
         class="chars-limit"
-        :class="{ 'error': !isDescriptionValid && descriptionLength > 0 }"
+        :class="{ 'error': !isDetailValid && detailLength > 0 }"
       >
-        {{ descriptionLength }}/64 chars
+        {{ detailLength }}/64 chars
       </span>
 
       <label id="color-picker">

@@ -22,6 +22,12 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "getAllDecks", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getDeck", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "updateDeck", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deleteDeck", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "createCard", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getCard", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getCardsByDeckId", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "updateCard", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "deleteCard", returnType: CAPPluginReturnPromise),
     ]
     
     @MainActor
@@ -169,4 +175,194 @@ public class SwiftDataPlugin: CAPPlugin, CAPBridgedPlugin {
             call.reject("Failed to update deck: \(error.localizedDescription)")
         }
     }
+    
+    @MainActor
+    @objc func deleteDeck(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Deck>(predicate: #Predicate<Deck> { deck in deck.id == id})
+            
+            guard let deck = try context.fetch(descriptor).first else {
+                call.reject("Deck not found")
+                return
+            }
+            
+            context.delete(deck)
+            try context.save()
+            call.resolve()
+        } catch {
+            call.reject("Failed to delete deck: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func createCard(_ call: CAPPluginCall) {
+        guard let content = call.getString("content"),
+              let backgroundColor = call.getString("backgroundColor"),
+              let color = call.getString("color"),
+              let order = call.getInt("order"),
+              let deckIdString = call.getString("deckId"),
+              let deckId = UUID(uuidString: deckIdString),
+              let context = container?.mainContext else {
+            call.reject("Missing card parameters")
+            return
+        }
+        
+        do {
+            let deckDescriptor = FetchDescriptor<Deck>(predicate: #Predicate<Deck> { deck in deck.id == deckId})
+            guard let deck = try context.fetch(deckDescriptor).first else {
+                call.reject("Deck not found")
+                return
+            }
+            
+            let newCard = Card(content: content, backgroundColor: backgroundColor, color: color, order: order, deck: deck)
+            context.insert(newCard)
+            try context.save()
+            
+            call.resolve([
+                "id": newCard.id.uuidString,
+                "content": newCard.content,
+                "backgroundColor": newCard.backgroundColor,
+                "color": newCard.color,
+                "order": newCard.order,
+                "deckId": deck.id.uuidString
+            ])
+        } catch {
+            call.reject("Failed to create card: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func getCard(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Card>(predicate: #Predicate<Card> { card in card.id == id})
+            
+            guard let card = try context.fetch(descriptor).first else {
+                call.reject("Card not found")
+                return
+            }
+            
+            call.resolve([
+                "id": card.id.uuidString,
+                "content": card.content,
+                "backgroundColor": card.backgroundColor,
+                "color": card.color,
+                "order": card.order,
+                "deckId": card.deck.id.uuidString
+            ])
+        } catch {
+            call.reject("Failed to fetch card: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func getCardsByDeckId(_ call: CAPPluginCall) {
+        guard let deckIdString = call.getString("deckId"),
+              let deckId = UUID(uuidString: deckIdString),
+              let context = container?.mainContext else {
+            call.reject("Invalid deck ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Card>(
+                predicate: #Predicate<Card> { card in card.deck.id == deckId },
+                sortBy: [SortDescriptor(\.order)]
+            )
+            
+            let cards = try context.fetch(descriptor)
+            let cardsData = cards.map { card in
+                [
+                    "id": card.id.uuidString,
+                    "content": card.content,
+                    "backgroundColor": card.backgroundColor,
+                    "color": card.color,
+                    "order": card.order,
+                    "deckId": card.deck.id.uuidString
+                ]
+            }
+            
+            call.resolve(["cards": cardsData])
+        } catch {
+            call.reject("Failed to fetch cards: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func updateCard(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Card>(predicate: #Predicate<Card> { card in card.id == id})
+            
+            guard let card = try context.fetch(descriptor).first else {
+                call.reject("Card not found")
+                return
+            }
+            
+            if let content = call.getString("content") { card.content = content }
+            if let backgroundColor = call.getString("backgroundColor") { card.backgroundColor = backgroundColor }
+            if let color = call.getString("color") { card.color = color }
+            if let order = call.getInt("order") { card.order = order }
+            card.updatedAt = Date()
+            
+            try context.save()
+            
+            call.resolve([
+                "id": card.id.uuidString,
+                "content": card.content,
+                "backgroundColor": card.backgroundColor,
+                "color": card.color,
+                "order": card.order,
+                "deckId": card.deck.id.uuidString
+            ])
+        } catch {
+            call.reject("Failed to update card: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    @objc func deleteCard(_ call: CAPPluginCall) {
+        guard let idString = call.getString("id"),
+              let id = UUID(uuidString: idString),
+              let context = container?.mainContext else {
+            call.reject("Invalid ID or context not available")
+            return
+        }
+            
+        do {
+            let descriptor = FetchDescriptor<Card>(predicate: #Predicate<Card> { card in card.id == id})
+            
+            guard let card = try context.fetch(descriptor).first else {
+                call.reject("Card not found")
+                return
+            }
+            
+            context.delete(card)
+            try context.save()
+            call.resolve()
+        } catch {
+            call.reject("Failed to delete card: \(error.localizedDescription)")
+        }
+    }
+
+    
 }
