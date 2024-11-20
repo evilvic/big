@@ -19,7 +19,6 @@ export class SwiftDataController {
   }
 
   async getDeck(id) {
-    console.log('getDeck', id)
     return await SwiftData.getDeck({ id })
   }
 

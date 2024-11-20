@@ -11,7 +11,8 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   const fetchCardsByDeckId = async (deckId) => {
-    cards.value = await dataController.value.getCardsByDeckId(deckId)
+    const fetchedCards = await dataController.value.getCardsByDeckId(deckId)
+    cards.value = fetchedCards.cards
   }
 
   const getCard = async (id) => {

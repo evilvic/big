@@ -87,15 +87,6 @@ const selectColor = (backgroundColor, color) => {
 const saveCard = async () => {
   if (isFormValid.value) {
     const rawCard = toRaw(card.value);
-
-    // Debug log to see what's being sent
-    console.log('Sending card data:', {
-      content: rawCard.content,          // This should map to 'content' in Swift
-      backgroundColor: rawCard.backgroundColor,
-      color: rawCard.color,
-      deckId: rawCard.deckId,
-      // order will be added by the store
-    });
     
     if (isEditMode.value) {
       await cardsStore.updateCard(rawCard);
